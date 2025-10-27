@@ -54,12 +54,3 @@ body {
   padding: 5px;
   background-color: #131950;
 }
-
-.inout a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 20px;
-  text-decoration: none;
-  margin: auto;
-}
