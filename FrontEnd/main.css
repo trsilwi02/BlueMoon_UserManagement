@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.trangchu {
+  display: flex;
+  height: 100vh;
+}
+
+.navbar {
+  display: block;
+  width: 250px;
+  background-color: #131950;
+}
+
+.user {
+  color: white;
+  padding: 14px 20px;
+}
+
+.chucnang {
+  width: 210px;
+  background-color: #131950;
+  padding: 20px;
+}
+
+.chucnang ul {
+  list-style: none;
+  margin: 0;
+  padding: 5px;
+}
+
+.chucnang li {
+  margin: 15px 0;
+}
+
+.chucnang a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.chucnang a:hover {
+  background-color: #04aa6d;
+}
+
+.inout li {
+  list-style: none;
+  margin: 5px 0;
+  padding: 5px;
+  background-color: #131950;
+}
+
+.inout a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+  margin: auto;
+}
+
+.main h1 {
+  text-align: center;
+  width: 1280px;
+}
+.main img {
+  display: block;
+  width: 500px;
+  margin: auto;
+}
