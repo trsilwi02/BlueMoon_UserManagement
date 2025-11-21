@@ -16,3 +16,5 @@ mongoose.connect(mongoURI)
   .catch(err => console.error('❌ Kết nối MongoDB thất bại:', err.message));
 
 // Định nghĩa model (cái khuôn - chức năng tương tự tảo bảng)
+
+// 

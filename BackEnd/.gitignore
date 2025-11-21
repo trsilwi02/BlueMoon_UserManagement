@@ -1,5 +1,0 @@
-# Bỏ qua thư mục node_modules ở bất kỳ đâu
-**/node_modules/
-
-# Bỏ qua tệp .env ở bất kỳ đâu (rất quan trọng cho bảo mật)
-**/.env
