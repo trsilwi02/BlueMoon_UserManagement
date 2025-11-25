@@ -1,16 +1,10 @@
 .top-bar {
   display: flex;
-  /* có khoảng trống ở giữa */
   justify-content: space-between;
   margin-bottom: 20px;
 }
-.top-bar input {
-  width: 250px;
-  padding: 8px;
-}
 .top-bar button {
   padding: 8px 16px;
-  /* đổi kiểu con trỏ chuột */
   cursor: pointer;
 }
 
@@ -18,23 +12,25 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
+
 th,
 td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
 }
+
 th {
   background: #f0f0f0;
 }
+
 .action-btn {
   margin: 0 4px;
   padding: 5px 10px;
   cursor: pointer;
 }
 
-/* Ẩn overlay ban đầu */
-.overlay {
+.overlay2 {
   display: none;
   position: fixed;
   top: 0;
@@ -46,8 +42,7 @@ th {
   align-items: center;
 }
 
-/* Khung modal */
-.modal {
+.modal2 {
   background: white;
   padding: 20px;
   width: 450px;
@@ -55,13 +50,13 @@ th {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-.modal label {
+.modal2 label {
   display: block;
   margin-top: 10px;
   font-weight: bold;
 }
 
-.modal input {
+.modal2 input {
   width: 95%;
   padding: 8px;
   margin-top: 4px;
