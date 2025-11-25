@@ -5,7 +5,13 @@ body {
   height: 100vh;
 }
 
+/* Phần điều hướng (bên trái) */
 .sidebar {
+  display: flex;
+  height: 100vh;
+}
+
+.navbar {
   display: block;
   width: 250px;
   background-color: #131950;
@@ -61,17 +67,8 @@ body {
   margin: auto;
 }
 
+/* Phần main (bên phải) */
 .main {
   flex: 1;
   padding: 20px;
-}
-
-.main h1 {
-  text-align: center;
-}
-
-.main img {
-  display: block;
-  width: 500px;
-  margin: auto;
 }

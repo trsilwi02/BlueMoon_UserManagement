@@ -3,51 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="./Image/logo.png" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="/FrontEnd/Image/logo.png"
+      type="image/x-icon"
+    />
     <title>Quản lý Hộ khẩu</title>
+    <link rel="stylesheet" href="../main_layout/layout.css" />
     <link rel="stylesheet" href="hokhau.css" />
   </head>
   <body>
-    <div class="dieuhuong">
-      <nav class="navbar">
-        <div class="user">
-          <p><b>Username:</b></p>
-        </div>
-        <div class="chucnang">
-          <ul>
-            <li>
-              <a href="../index.html">Trang chủ</a>
-            </li>
-            <li>
-              <a href="../Ho_khau/hokhau.html">Quản lý Hộ khẩu</a>
-            </li>
-            <li>
-              <a href="../Nhan_khau/nhankhau.html">Quản lý Nhân khẩu</a>
-            </li>
-            <li>
-              <a href="../Thu_phi/thuphi.html">Quản lý Thu phí</a>
-            </li>
-            <li>
-              <a href="../Cong_no/congno.html">Quản lý Công nợ</a>
-            </li>
-            <li>
-              <a href="../Quy_cong_dong/quycongdong.html">Quỹ cộng đồng</a>
-            </li>
-            <li>
-              <a href="../Phuong_tien/phuongtien.html">Quản lý phương tiện</a>
-            </li>
-          </ul>
-        </div>
+    <div id="sidebar"></div>
 
-        <div class="inout">
-          <li>
-            <a href="../Dang_nhap/login.html">Đăng nhập</a>
-            <a href="">Đăng xuất</a>
-          </li>
+    <div class="main">
+      <div class="top-bar">
+        <input type="text" placeholder="Search..." />
+        <button id="newadd">Thêm mới</button>
+        <div id="modalOverlay" class="overlay">
+          <div class="modal">
+            <h2>Thông tin hộ khẩu</h2>
+
+            <label>Mã hộ khẩu:</label>
+            <input type="text" id="maHoKhau" />
+
+            <label>Địa chỉ:</label>
+            <input type="text" id="diaChi" />
+
+            <h2>Thông tin chủ hộ</h2>
+
+            <label>Họ tên chủ hộ:</label>
+            <input type="text" id="chuHo" />
+
+            <label>Ngày sinh:</label>
+            <input type="date" id="ngaySinh" />
+
+            <label>CCCD:</label>
+            <input type="text" id="cccd" />
+
+            <label>SĐT:</label>
+            <input type="text" id="sdt" />
+
+            <div class="buttons">
+              <button id="save">Thêm</button>
+              <button id="close">Đóng</button>
+            </div>
+          </div>
         </div>
-      </nav>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Mã hộ</th>
+            <th>Họ tên chủ hộ</th>
+            <th>Địa chỉ</th>
+            <th>Số thành viên</th>
+            <th>Tác vụ</th>
+          </tr>
+        </thead>
+        <tbody id="family">
+          <!-- Dữ liệu sẽ được JS thêm vào đây -->
+        </tbody>
+
+        <!-- <tbody>
+          <tr>
+            <td>H001</td>
+            <td>Nguyễn Văn A</td>
+            <td>123 Đường ABC</td>
+            <td>4</td>
+            <td>
+              <button id="show_info" class="action-btn">Xem</button>
+              <button id="delete_info" class="action-btn">Xóa</button>
+            </td>
+          </tr>
+        </tbody> -->
+      </table>
     </div>
 
     <script src="hokhau.js"></script>
+    <script src="../main_layout/sidebar.js"></script>
   </body>
 </html>
