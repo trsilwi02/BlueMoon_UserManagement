@@ -17,14 +17,36 @@
 
     <div class="main">
       <div class="top-bar">
-        <input type="text" placeholder="Search..." />
+        <div class="search-box">
+          <label style="font-weight: 600; white-space: nowrap">Tìm kiếm:</label>
+          <div class="input-group">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Nhập tên hoặc mã hộ..."
+            />
+            <svg
+              xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </div>
+        </div>
         <button id="newadd">Thêm mới</button>
         <div id="modalOverlay" class="overlay">
           <div class="modal">
             <h2>Thông tin hộ khẩu</h2>
 
             <label>Mã hộ khẩu:</label>
-            <input type="text" id="maHoKhau" />
+            <input type="text" id="maHo" />
 
             <label>Địa chỉ:</label>
             <input type="text" id="diaChi" />
@@ -51,36 +73,30 @@
         </div>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Mã hộ</th>
-            <th>Họ tên chủ hộ</th>
-            <th>Địa chỉ</th>
-            <th>Số thành viên</th>
-            <th>Tác vụ</th>
-          </tr>
-        </thead>
-        <tbody id="family">
-          <!-- Dữ liệu sẽ được JS thêm vào đây -->
-        </tbody>
-
-        <!-- <tbody>
-          <tr>
-            <td>H001</td>
-            <td>Nguyễn Văn A</td>
-            <td>123 Đường ABC</td>
-            <td>4</td>
-            <td>
-              <button id="show_info" class="action-btn">Xem</button>
-              <button id="delete_info" class="action-btn">Xóa</button>
-            </td>
-          </tr>
-        </tbody> -->
-      </table>
+      <section class="table-section">
+        <div class="table-container">
+          <div class="table-scroll-area">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: center">Mã hộ</th>
+                  <th>Họ tên chủ hộ</th>
+                  <th>Địa chỉ</th>
+                  <th style="text-align: center">Số thành viên</th>
+                  <th style="text-align: center">Ngày lập</th>
+                  <th style="text-align: center">Tác vụ</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <!-- JS sẽ render dữ liệu vào đây -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
 
     <script src="hokhau.js"></script>
-    <script src="../main_layout/sidebar.js"></script>
+    <script src="/FrontEnd/main_layout/sidebar.js"></script>
   </body>
 </html>
