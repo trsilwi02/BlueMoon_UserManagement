@@ -5,12 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
     <title>Quản lý Nhân khẩu</title>
-    <link rel="stylesheet" href="../main_layout/layout.css" />
+    <link rel="stylesheet" href="/FrontEnd/main_layout/layout.css" />
     <link rel="stylesheet" href="nhankhau.css" />
   </head>
   <body>
     <div id="sidebar"></div>
+
+    <div class="main">
+      <!-- Search & Filter -->
+      <div class="top-bar">
+        <div class="search-box">
+          <label style="font-weight: 600; white-space: nowrap">Tìm kiếm:</label>
+          <div class="input-group">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Nhập tên, CCCD hoặc mã hộ..."
+            />
+            <svg
+              xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Thống kê -->
+        <div class="stats-box">
+          <span style="font-weight: 600; color: #475569">Số lượng:</span>
+          <span id="totalCount" class="stats-number">0</span>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <section class="table-section">
+        <div class="table-container">
+          <div class="table-scroll-area">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 50px; text-align: center">STT</th>
+                  <th>Họ và tên</th>
+                  <th>Ngày sinh</th>
+                  <th>CCCD</th>
+                  <th>SĐT</th>
+                  <th>Mã hộ</th>
+                  <th>Địa chỉ</th>
+                  <th style="width: 100px; text-align: center">Tác vụ</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <!-- JS sẽ render dữ liệu vào đây -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
     <script src="nhankhau.js"></script>
-    <script src="../main_layout/sidebar.js"></script>
+    <script src="/FrontEnd/main_layout/sidebar.js"></script>
   </body>
 </html>

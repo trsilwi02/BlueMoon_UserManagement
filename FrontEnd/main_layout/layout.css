@@ -54,7 +54,7 @@ body {
 .inout li {
   list-style: none;
   margin: 5px 0;
-  padding: 5px;
+  padding: 15px;
   background-color: #131950;
 }
 
@@ -67,8 +67,17 @@ body {
   margin: auto;
 }
 
+.inout a:hover {
+  background-color: red;
+}
+
 /* Phần main (bên phải) */
 .main {
+  /* padding-bottom: 0 !important; */
+  /* Chuyển main thành Flexbox để kiểm soát chiều cao tốt hơn */
   flex: 1;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Ngăn thanh cuộn thừa của chính main */
 }
