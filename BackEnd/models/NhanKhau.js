@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const NhanKhauSchema = new mongoose.Schema({
     hoTen: { type: String, required: true },
     ngaySinh: { type: Date, required: true },
-    gioiTinh: { type: String, enum: ["Nam", "Nũ", "Khác"], required: true },
+    gioiTinh: { type: String, enum: ["Nam", "Nữ", "Khác"], required: true },
     soCCCD: { type: String, required: true, unique: true },
     diaChi: { type: String},
     diaChiTamTru: { type: String },
