@@ -9,6 +9,7 @@ const btnSave = document.getElementById("save");
 const API_URL = "http://localhost:5000/api/hokhau";
 
 //DỮ LIỆU GIẢ LẬP (Thay vì gọi API, ta dùng mảng này để test)
+//khai báo đối tượng object
 let danhSachHoKhau2 = [
   {
     maHo: "HK001",
@@ -78,6 +79,7 @@ searchInput.addEventListener("input", (e) => {
   const tuKhoa = e.target.value.toLowerCase(); //lấy từ khoá người dùng nhập, chuyển thành viết thường
   //lọc danh sách
   const kqLoc = danhSachHoKhau.filter(
+    //hàm lọc
     (item) =>
       item.chuHo.toLowerCase().includes(tuKhoa) ||
       item.maHo.toLowerCase().includes(tuKhoa)
