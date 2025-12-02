@@ -93,7 +93,7 @@
 }
 
 .buttons {
-  text-align: right;
+  text-align: center;
   margin-top: 20px;
 }
 
@@ -184,9 +184,18 @@ tr:hover {
 }
 
 .action-btn {
+  text-align: center;
   margin: 0 4px;
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.view-btn:hover {
+  background-color: rgb(154, 255, 154);
+}
+
+.delete-btn:hover {
+  background-color: rgb(255, 143, 143);
 }
 
 .task-btn {

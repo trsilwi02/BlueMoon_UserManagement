@@ -1,38 +1,136 @@
 .top-bar {
+  padding: 20px 32px; /* Tăng padding 2 bên cho cân đối với bảng */
   display: flex;
+  /* có khoảng trống ở giữa */
   justify-content: space-between;
-  margin-bottom: 20px;
+  align-items: center;
+  flex-shrink: 0; /* Đảm bảo thanh này không bị co lại */
 }
 .top-bar button {
   padding: 8px 16px;
+  background-color: #eff6ff;
+  font-size: 15px;
+  border: 1px solid;
+  border-radius: 8px;
+  /* đổi kiểu con trỏ chuột */
   cursor: pointer;
 }
 h2 {
   margin: 0;
 }
 
+/* Table section */
+.table-section {
+  padding: 24px 32px 24px 32px;
+  flex: 1; /* Tự động chiếm hết chiều cao còn lại */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.table-container {
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  /* Chỉ bo góc trên, góc dưới vuông để tiếp đất liền mạch */
+  border-radius: 8px 8px 0 0;
+  border-bottom: none; /* Bỏ viền dưới */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.table-scroll-area {
+  flex: 1;
+  overflow-y: auto; /* Cuộn dọc tại đây */
+  scrollbar-width: thin;
+  padding-bottom: 0;
+}
+
+/* Custom Scrollbar cho đẹp */
+.table-scroll-area::-webkit-scrollbar {
+  width: 8px;
+}
+.table-scroll-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.table-scroll-area::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.table-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
+  text-align: left;
 }
 
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #f8fafc;
+  z-index: 10;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 th {
-  background: #f0f0f0;
+  padding: 16px;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Nút tác vụ */
+.task-btn {
+  text-align: center;
+  display: flex;
 }
 
 .action-btn {
   margin: 0 4px;
-  padding: 5px 10px;
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
 
+.btn-edit {
+  color: var(--primary-color);
+}
+.btn-edit:hover {
+  background-color: #eff6ff;
+}
+
+.btn-delete {
+  color: var(--danger-color);
+}
+.btn-delete:hover {
+  background-color: #fef2f2;
+}
+
+/* Thêm mới thành viên */
 .overlay2 {
   display: none;
   position: fixed;
@@ -43,6 +141,7 @@ th {
   background: rgba(0, 0, 0, 0.4);
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal2 {
@@ -75,4 +174,13 @@ th {
 .buttons button {
   padding: 8px 14px;
   cursor: pointer;
+}
+
+#QuanHeVoiChuHo,
+#GioiTinh {
+  margin-top: 4px;
+  padding: 8px;
+  width: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
