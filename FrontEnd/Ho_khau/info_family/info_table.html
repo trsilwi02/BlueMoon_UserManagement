@@ -3,17 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="shortcut icon"
-      href="/FrontEnd/Image/logo.png"
-      type="image/x-icon"
-    />
-    <title>Thêm thành viên hộ gia đình</title>
-    <link rel="stylesheet" href="/FrontEnd/main_layout/layout.css" />
+    <link rel="shortcut icon" href="../../Image/logo.png" type="image/x-icon" />
+    <title>Thành viên hộ gia đình</title>
+    <link rel="stylesheet" href="../../main_layout/layout.css" />
     <link rel="stylesheet" href="info_table.css" />
   </head>
   <body>
-    <div id="sidebar"></div>
+    <div class="sidebar">
+      <nav class="navbar">
+        <div class="user">
+          <p><b>Username:</b></p>
+        </div>
+        <div class="chucnang">
+          <ul>
+            <li>
+              <a href="../../index.html">Trang chủ</a>
+            </li>
+            <li>
+              <a href="../../Ho_khau/hokhau.html">Quản lý Hộ khẩu</a>
+            </li>
+            <li>
+              <a href="../../Nhan_khau/nhankhau.html">Quản lý Nhân khẩu</a>
+            </li>
+            <li>
+              <a href="../../Thu_phi/thuphi.html">Quản lý Thu phí</a>
+            </li>
+            <li>
+              <a href="../../Cong_no/congno.html">Quản lý Công nợ</a>
+            </li>
+            <li>
+              <a href="../../Quy_cong_dong/quycongdong.html">Quỹ cộng đồng</a>
+            </li>
+            <li>
+              <a href="../../Phuong_tien/phuongtien.html"
+                >Quản lý phương tiện</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="inout">
+          <li>
+            <a href="../login/index.html">Đăng nhập</a>
+            <a href="">Đăng xuất</a>
+          </li>
+        </div>
+      </nav>
+    </div>
 
     <div class="main">
       <div class="top-bar">
@@ -24,11 +60,19 @@
             <h2>Thông tin thành viên</h2>
 
             <label>Họ tên:</label>
-            <input type="text" id="hoTen" />
+            <input type="text" id="HoVaTen" />
 
             <label>Ngày sinh:</label>
-            <input type="date" id="ngaySinh" />
+            <input type="date" id="NgaySinh" />
 
+            <label>Giới tính:</label>
+            <select id="GioiTinh">
+              <option value="Trống"></option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+
+            <!-- PK -->
             <label>CCCD:</label>
             <input type="text" id="cccd" />
 
@@ -36,7 +80,18 @@
             <input type="text" id="sdt" />
 
             <label>Quan hệ với chủ hộ</label>
-            <input type="text" id="quanHeChuHo" />
+            <select name="Chọn mối quan hệ" id="QuanHeVoiChuHo">
+              <option value="Trống"></option>
+              <option value="Vợ">Vợ</option>
+              <option value="Chồng">Chồng</option>
+              <option value="Con ruột">Con ruột</option>
+              <option value="Bố">Bố</option>
+              <option value="Mẹ">Mẹ</option>
+              <option value="Anh ruột">Anh ruột</option>
+              <option value="Chị ruột">Chị ruột</option>
+              <option value="Em ruột">Em ruột</option>
+              <option value="Khác">Khác</option>
+            </select>
 
             <div class="buttons">
               <button id="save2">Thêm</button>
@@ -46,39 +101,31 @@
         </div>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Họ và tên</th>
-            <th>Ngày sinh</th>
-            <th>CCCD</th>
-            <th>SĐT</th>
-            <th>Quan hệ với chủ hộ</th>
-            <th>Tác vụ</th>
-          </tr>
-        </thead>
-        <tbody id="mem-tableBody">
-          <!-- Dữ liệu sẽ được JS thêm vào đây -->
-        </tbody>
-
-        <!-- <tbody>
-          <tr>
-            <td>H001</td>
-            <td>Nguyễn Văn A</td>
-            <td>22/02/2005</td>
-            <td>0402050002672</td>
-            <td>0941671645</td>
-            <td>Chủ hộ</td>
-            <td>
-              <button id="delete_info2" class="action-btn">Xóa</button>
-            </td>
-          </tr>
-        </tbody> -->
-      </table>
+      <section class="table-section">
+        <div class="table-container">
+          <div class="table-scroll-area">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: center">STT</th>
+                  <th>Họ và tên</th>
+                  <th style="text-align: center">Ngày sinh</th>
+                  <th style="text-align: center">Giới tính</th>
+                  <th style="text-align: center">CCCD</th>
+                  <th style="text-align: center">SĐT</th>
+                  <th style="text-align: center">Quan hệ với chủ hộ</th>
+                  <th style="text-align: center">Tác vụ</th>
+                </tr>
+              </thead>
+              <tbody id="mem_tableBody">
+                <!-- Dữ liệu sẽ được JS thêm vào đây -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
 
     <script src="info_table.js"></script>
-    <script src="/FrontEnd/main_layout/sidebar.js"></script>
   </body>
 </html>

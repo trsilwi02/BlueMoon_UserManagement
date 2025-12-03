@@ -1,8 +1,8 @@
 async function loadSidebar() {
   try {
     // 1. Gửi request đọc file sidebar.html
-    // const response = await fetch("../main_layout/sidebar.html"); //await giúp dừng hàm tại đây cho đến khi fetch xong
-    const response = await fetch("/FrontEnd/main_layout/sidebar.html"); //await giúp dừng hàm tại đây cho đến khi fetch xong
+    const response = await fetch("../main_layout/sidebar.html"); //await giúp dừng hàm tại đây cho đến khi fetch xong
+    // const response = await fetch("FrontEnd/main_layout/sidebar.html"); //await giúp dừng hàm tại đây cho đến khi fetch xong
 
     // 2. Kiểm tra nếu file không tồn tại
     if (!response.ok) {
