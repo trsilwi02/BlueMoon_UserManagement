@@ -1,59 +1,72 @@
-const HoKhau = require('../models/HoKhau');
+const HoKhau = require("../models/HoKhau");
 
-// Lấy tất cả hộ khẩu:
+// Lấy tất cả hộ khẩu
 exports.getAll = async (req, res) => {
-    try {
-        const hoKhaus = await HoKhau.find();
-        res.json(hoKhaus);
-    }   catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const data = await HoKhau.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Lấy thông tin hộ khẩu dựa trên id:
+// Lấy theo IDHoKhau (KHÔNG phải ObjectId)
 exports.getId = async (req, res) => {
-    try {
-        const hoKhau = await HoKhau.findById(req.params.id);
-        if (!hoKhau){
-            return res.status(404).json({ message: 'Hộ khẩu không tồn tại' });
-        }
-        res.json(hoKhau);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const hk = await HoKhau.findOne({ IDHoKhau: req.params.id });
+
+    if (!hk) return res.status(404).json({ message: "Không tìm thấy hộ khẩu!" });
+
+    res.json(hk);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Thêm hộ khẩu mới:
+// Thêm hộ khẩu
 exports.create = async (req, res) => {
-    try {
-        const newHoKhau = await HoKhau.create(req.body);
-        res.json(newHoKhau);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+  try {
+    const data = req.body;
+
+    const exists = await HoKhau.findOne({ IDHoKhau: data.IDHoKhau });
+    if (exists) {
+      return res.status(400).json({ message: "Mã hộ khẩu đã tồn tại!" });
     }
+
+    const newHK = await HoKhau.create(data);
+    res.json({ message: "Thêm thành công!", data: newHK });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Cap nhật thông tin hộ khẩu:
+// Cập nhật hộ khẩu
 exports.update = async (req, res) => {
-    try {
-        const updatedHoKhau = await HoKhau.findByIdAndUpdate(req.params.id, req.body);
-        if (!updatedHoKhau) {
-            return res.status(404).json({ message: 'Hộ khẩu không tồn tại' });
-        }
-        res.json(updatedHoKhau);
-    } catch (err) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const updated = await HoKhau.findOneAndUpdate(
+      { IDHoKhau: req.params.id },
+      req.body,
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ message: "Không tồn tại!" });
+
+    res.json({ message: "Cập nhật thành công!", data: updated });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
-// Xóa hộ khẩu:
+
+// Xoá hộ khẩu
 exports.delete = async (req, res) => {
-    try {
-        const deletedHoKhau = await HoKhau.findByIdAndDelete(req.params.id);
-        if (!deletedHoKhau) {
-            return res.status(404).json({ message: 'Hộ khẩu không tồn tại' });
-        }
-        res.json(deletedHoKhau);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }  
+  try {
+    const deleted = await HoKhau.findOneAndDelete({ IDHoKhau: req.params.id });
+
+    if (!deleted) return res.status(404).json({ message: "Không tồn tại!" });
+
+    res.json({ message: "Xóa thành công!" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

@@ -6,7 +6,8 @@ const searchInput = document.getElementById("searchInput");
 const btnSave = document.getElementById("save");
 
 //API: URL của Backend (Server Node.js)
-const API_URL = "http://localhost:5000/api/hokhau";
+const API_URL = "http://localhost:3000/api/hokhau";
+
 
 let danhSachHoKhau = []; //mảng để lưu dữ liệu từ server gửi về
 

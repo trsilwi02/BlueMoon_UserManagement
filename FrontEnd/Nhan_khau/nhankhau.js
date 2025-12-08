@@ -3,7 +3,7 @@ const totalCountEl = document.getElementById("totalCount");
 const searchInput = document.getElementById("searchInput");
 
 //API: url của BACKEND (server node.js)
-const API_NHANKHAU = "http://localhost:5000/api/nhankhau";
+const API_NHANKHAU = "http://localhost:3000/api/nhankhau";
 
 let danhSachNhanKhau = []; //mảng để lưu dữ liệu nhân khẩu từ server gửi về
 

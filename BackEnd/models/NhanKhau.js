@@ -1,16 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const NhanKhauSchema = new mongoose.Schema({
-    hoTen: { type: String, required: true },
-    ngaySinh: { type: Date, required: true },
-    gioiTinh: { type: String, enum: ["Nam", "Nữ", "Khác"], required: true },
-    soCCCD: { type: String, required: true, unique: true },
-    diaChi: { type: String},
-    diaChiTamTru: { type: String },
-    sdt: { type: String },
-    ngheNghiep: { type: String },
-    hoKhauId: { type: mongoose.Schema.Types.ObjectId, ref: 'HoKhau' },
-}, { timestamps: true });
+  HoVaTen: { type: String, required: true },
+  NgaySinh: { type: String, required: true },   
+  GioiTinh: { type: String, required: true },
+  cccd: { type: String, required: true },
+  sdt: { type: String, required: true },
+  QuanHeVoiChuHo: { type: String, default: "" },
+  IDHoKhau: { type: String, required: true },   
+  diaChi: { type: String, default: "" }
+});
 
-module.exports = mongoose.model('NhanKhau', NhanKhauSchema);
-
+module.exports = mongoose.model("NhanKhau", NhanKhauSchema);

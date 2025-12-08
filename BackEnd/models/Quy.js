@@ -6,6 +6,6 @@ const QuySchema = new mongoose.Schema({
     tongSoTien: { type: Number, default: 0, required: true },
     mucTieu: { type: Number },
     ghiChu: { type: String },
-}, { timestamps: true });
+}, { timestamps: true }  );
 
 module.exports = mongoose.model('Quy', QuySchema);

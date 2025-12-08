@@ -1,60 +1,73 @@
-const NhanKhau = require ('../models/NhanKhau.js');
+const NhanKhau = require("../models/NhanKhau");
 
-// Lấy tất cả nhân khẩu:
+// ===============================
+// Lấy toàn bộ nhân khẩu (nhankhau.html)
+// ===============================
 exports.getAll = async (req, res) => {
-    try {
-        const nhanKhaus = await NhanKhau.find();
-        res.json(nhanKhaus);
-    }   catch (error) {
-        res.status(500).json({ message: error.message });
-    }   
+  try {
+    const list = await NhanKhau.find();
+    res.json(list);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Lấy thông tin dựa trên id:
-exports.getId = async (req, res) => {
-    try {
-        const nhanKhau = await NhanKhau.findById(req.params.id);
-        if (!nhanKhau) {
-            return res.status(404).json({ message: 'Nhân khẩu không tồn tại' });
-        }
-        res.json(nhanKhau);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+// ===============================
+// Lấy nhân khẩu theo ID hộ khẩu (info_family)
+// ===============================
+exports.getByHoKhau = async (req, res) => {
+  try {
+    const list = await NhanKhau.find({ IDHoKhau: req.params.id });
+    res.json(list);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Thêm nhân khẩu mới:
+// ===============================
+// Thêm nhân khẩu
+// ===============================
 exports.create = async (req, res) => {
-    try {
-        const newNhanKhau = await NhanKhau.create(req.body);
-        res.json(newNhanKhau);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const nk = await NhanKhau.create(req.body);
+    res.json({ message: "Thêm nhân khẩu thành công!", data: nk });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Cập nhật thông tin nhân khẩu:
+// ===============================
+// Cập nhật nhân khẩu
+// ===============================
 exports.update = async (req, res) => {
-    try {
-        const updatedNhanKhau = await NhanKhau.findByIdAndUpdate(req.params.id, req.body);
-        if (!updatedNhanKhau) {
-            return res.status(404).json({ message: 'Nhân khẩu không tồn tại' });
-        }
-        res.json(updatedNhanKhau);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const updated = await NhanKhau.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updated)
+      return res.status(404).json({ message: "Không tìm thấy nhân khẩu!" });
+
+    res.json({ message: "Cập nhật thành công!", data: updated });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Xóa nhân khẩu:
+// ===============================
+// Xoá nhân khẩu
+// ===============================
 exports.delete = async (req, res) => {
-    try {
-        const deletedNhanKhau = await NhanKhau.findByIdAndDelete(req.params.id);
-        if (!deletedNhanKhau) {
-            return res.status(404).json({ message: 'Nhân khẩu không tồn tại' });
-        }
-        res.json(deletedNhanKhau);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const deleted = await NhanKhau.findByIdAndDelete(req.params.id);
+
+    if (!deleted)
+      return res.status(404).json({ message: "Không tìm thấy nhân khẩu!" });
+
+    res.json({ message: "Xóa thành công!" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
