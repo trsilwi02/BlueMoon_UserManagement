@@ -5,13 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
     <title>Quản lý Phương tiện</title>
+
+    <!-- CSS layout chung -->
     <link rel="stylesheet" href="../main_layout/layout.css" />
+    <!-- CSS riêng của trang phương tiện -->
     <link rel="stylesheet" href="phuongtien.css" />
   </head>
+
   <body>
+    <!-- Sidebar -->
     <div id="sidebar"></div>
 
-    <script src="phuongtien.js"></script>
+    <!-- Nội dung trang -->
+    <div class="content">
+      <!-- Thanh tìm kiếm -->
+      <div class="search-box">
+        <i>🔍</i>
+        <input
+          type="text"
+          placeholder="Nhập tên chủ xe, biển số hoặc loại xe..."
+        />
+      </div>
+
+      <!-- Số lượng -->
+      <div class="count">Số lượng: <span id="count">0</span></div>
+
+      <!-- Bảng -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Chủ phương tiện</th>
+              <th>Biển số</th>
+              <th>Loại xe</th>
+              <th>Ghi chú</th>
+              <th>Tác vụ</th>
+            </tr>
+          </thead>
+          <tbody id="data-body">
+            <!-- Backend render vào đây -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- JS (đặt cuối body để không lỗi DOM) -->
     <script src="../main_layout/sidebar.js"></script>
+    <script src="phuongtien.js"></script>
   </body>
 </html>
