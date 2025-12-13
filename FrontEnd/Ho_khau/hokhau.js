@@ -80,6 +80,7 @@ btnSave.onclick = async () => {
   const DiaChiVal = document.getElementById("DiaChi").value;
   const TenChuHoVal = document.getElementById("TenChuHo").value;
   const NgaySinhVal = document.getElementById("NgaySinh").value;
+  const GioiTinhVal = document.getElementById("GioiTinh").value;
   const cccdVal = document.getElementById("cccd").value;
   const sdtVal = document.getElementById("sdt").value;
 
@@ -89,6 +90,7 @@ btnSave.onclick = async () => {
     !TenChuHoVal ||
     !DiaChiVal ||
     !NgaySinhVal ||
+    !GioiTinhVal ||
     !cccdVal ||
     !sdtVal
   ) {
@@ -113,6 +115,7 @@ btnSave.onclick = async () => {
     DiaChi: DiaChiVal,
     TenChuHo: TenChuHoVal,
     NgaySinh: NgaySinhVal,
+    GioiTinh: GioiTinhVal,
     cccd: cccdVal,
     sdt: sdtVal,
     NgayLap: new Date().toLocaleDateString("vi-VN"), //thời điểm ấn lưu
@@ -137,6 +140,7 @@ btnSave.onclick = async () => {
       document.getElementById("DiaChi").value = "";
       document.getElementById("TenChuHo").value = "";
       document.getElementById("NgaySinh").value = "";
+      document.getElementById("GioiTinh").value = "";
       document.getElementById("cccd").value = "";
       document.getElementById("sdt").value = "";
 
