@@ -1,34 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="shortcut icon"
-      href="/FrontEnd/Image/logo.png"
-      type="image/x-icon"
-    />
-    <title>Login Page</title>
+    <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
+    <title>Đăng nhập</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container">
       <!-- Cột trái: logo + mô tả -->
       <div class="left-section">
-        <img
-          src="/FrontEnd/Image/favicon3.png"
-          alt="Your Project Logo"
-          class="project-logo"
-        />
-        <p class="description">
-          <!-- 👉 Thay phần mô tả này bằng thông tin về dự án của bạn -->
-          Welcome to our project platform. Please log in to continue and explore
-          amazing features!
-        </p>
-      </div>
-
-      <!-- Cột phải: form đăng nhập -->
-      <div class="right-section">
         <div class="login-box">
           <input
             type="text"
@@ -39,11 +21,17 @@
           <button class="login-btn">Log in</button>
           <a href="#" class="forgot">Forgotten password?</a>
           <hr />
-          <button class="create-btn">Create new account</button>
+
+          <a class="create-btn" href="../signin/dangky.html"
+            >Create new account</a
+          >
         </div>
-        <p class="create-page">
-          <a href="#">Create a Page</a> for a celebrity, brand or business.
-        </p>
+      </div>
+
+      <!-- Cột phải: form đăng nhập -->
+      <div class="right-section">
+        <img src="../Image/favicon3.png" alt="Logo" class="project-logo" />
+        <p class="description">Hệ thống Quản lý Dân cư Blue Moon</p>
       </div>
     </div>
   </body>
