@@ -1,0 +1,78 @@
+body {
+  font-family: "Inter", sans-serif;
+  background: #f7f8fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* ======= Thanh tìm kiếm ======== */
+.search-box {
+  width: 95%;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e3e3e3;
+}
+
+.search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.search-box i {
+  margin-right: 10px;
+  opacity: 0.6;
+}
+
+/* ======= Bảng ======== */
+.table-container {
+  width: 95%;
+  margin: auto;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #e9ecf2;
+}
+
+th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #efefef;
+  font-size: 14px;
+}
+
+/* ======= Số lượng ======== */
+.count {
+  width: 95%;
+  margin: 15px auto;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.count span {
+  color: #2563eb;
+  font-weight: 600;
+}

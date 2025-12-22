@@ -4,12 +4,187 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
-    <title>Quản lý Công nợ</title>
-    <link rel="stylesheet" href="../main_layout/layout.css" />
+    <title>Quản lý Công Nợ</title>
     <link rel="stylesheet" href="congno.css" />
+    <link rel="stylesheet" href="../main_layout/layout.css" />
   </head>
   <body>
     <div id="sidebar"></div>
+
+    <div class="main">
+      <div class="top-bar">
+        <div class="search-box">
+          <label>Tìm kiếm:</label>
+          <div class="input-group">
+            <input type="text" placeholder="Nhập mã hộ, tên chủ hộ..." />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div class="stats-box">
+          <span>Tổng nợ cần thu:</span>
+          <span class="stats-number">5.150.000 đ</span>
+        </div>
+      </div>
+
+      <section class="table-section">
+        <div class="table-container">
+          <div class="table-scroll-area">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 100px">Mã hộ</th>
+                  <th>Tên chủ hộ</th>
+                  <th style="width: 120px">Kỳ</th>
+                  <th style="text-align: right">Tổng tiền</th>
+                  <th style="text-align: right">Còn nợ</th>
+                  <th style="width: 200px; text-align: center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  data-dien="850.000"
+                  data-nuoc="150.000"
+                  data-rac="50.000"
+                  data-ql="200.000"
+                >
+                  <td><strong>A101</strong></td>
+                  <td>Nguyễn Văn A</td>
+                  <td>11/2025</td>
+                  <td style="text-align: right">1.250.000</td>
+                  <td
+                    style="text-align: right; color: green; font-weight: bold"
+                  >
+                    0
+                  </td>
+                  <td class="action-cell">
+                    <button class="btn btn-detail" onclick="openModal(this)">
+                      Chi tiết
+                    </button>
+                  </td>
+                </tr>
+
+                <tr
+                  data-dien="1.500.000"
+                  data-nuoc="300.000"
+                  data-rac="50.000"
+                  data-ql="250.000"
+                >
+                  <td><strong>B205</strong></td>
+                  <td>Trần Thị B</td>
+                  <td>11/2025</td>
+                  <td style="text-align: right">2.100.000</td>
+                  <td
+                    style="text-align: right; color: #d32f2f; font-weight: bold"
+                  >
+                    2.100.000
+                  </td>
+                  <td class="action-cell">
+                    <button class="btn btn-detail" onclick="openModal(this)">
+                      Chi tiết
+                    </button>
+                  </td>
+                </tr>
+
+                <tr
+                  data-dien="900.000"
+                  data-nuoc="200.000"
+                  data-rac="50.000"
+                  data-ql="200.000"
+                >
+                  <td><strong>C309</strong></td>
+                  <td>Lê Văn C</td>
+                  <td>11/2025</td>
+                  <td style="text-align: right">1.350.000</td>
+                  <td
+                    style="text-align: right; color: #d32f2f; font-weight: bold"
+                  >
+                    500.000
+                  </td>
+                  <td class="action-cell">
+                    <button class="btn btn-detail" onclick="openModal(this)">
+                      Chi tiết
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="invoiceModal" class="modal-overlay">
+      <div class="modal-box">
+        <h2 class="modal-title">Thông tin chi tiết</h2>
+
+        <div class="modal-section">
+          <h3 class="section-title">Thông tin hộ khẩu</h3>
+          <div class="form-group">
+            <label>Mã hộ khẩu:</label>
+            <input type="text" id="modalMaHo" readonly />
+          </div>
+          <div class="form-group">
+            <label>Chủ hộ:</label>
+            <input type="text" id="modalChuHo" readonly />
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h3 class="section-title">Chi tiết dịch vụ</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tiền Điện:</label>
+              <input type="text" id="modalDien" readonly />
+            </div>
+            <div class="form-group">
+              <label>Tiền Nước:</label>
+              <input type="text" id="modalNuoc" readonly />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Vệ sinh:</label>
+              <input type="text" id="modalRac" readonly />
+            </div>
+            <div class="form-group">
+              <label>Quản lý:</label>
+              <input type="text" id="modalQuanLy" readonly />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label style="color: #d32f2f">TỔNG CỘNG:</label>
+            <input
+              type="text"
+              id="modalTong"
+              style="color: #d32f2f; font-weight: bold"
+              readonly
+            />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-modal btn-close" onclick="closeModal()">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="congno.js"></script>
     <script src="../main_layout/sidebar.js"></script>
   </body>
