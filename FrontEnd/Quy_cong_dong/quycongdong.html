@@ -5,12 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
     <title>Quản lý Quỹ cộng đồng</title>
+
+    <!-- CSS chung -->
     <link rel="stylesheet" href="../main_layout/layout.css" />
+    <!-- CSS riêng -->
     <link rel="stylesheet" href="quycongdong.css" />
   </head>
+
   <body>
+    <!-- SIDEBAR -->
     <div id="sidebar"></div>
-    <script src="quycongdong.js"></script>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+      <!-- Ô tìm kiếm -->
+      <div class="search-box">
+        <span>🔍</span>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Nhập tên quỹ hoặc ghi chú…"
+        />
+      </div>
+
+      <!-- Số lượng -->
+      <div class="count">Số lượng: <b id="count">0</b></div>
+
+      <!-- Bảng -->
+      <table>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Tên quỹ</th>
+            <th>Tổng tiền</th>
+            <th>Ghi chú</th>
+            <th>Tác vụ</th>
+          </tr>
+        </thead>
+
+        <tbody id="table-body">
+          <!-- Dữ liệu sẽ load từ JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- JS luôn để dưới cùng -->
     <script src="../main_layout/sidebar.js"></script>
+    <script src="quycongdong.js"></script>
   </body>
 </html>

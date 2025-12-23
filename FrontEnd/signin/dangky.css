@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1000px;
+  max-width: 95%;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Bên phải */
+.right-section {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-logo {
+  width: 250px;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-weight: bold;
+  font-size: 24px;
+  color: #555;
+  line-height: 1.2;
+}
+
+/* Bên trái */
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-box {
+  width: 360px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.signup-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #dddfe2;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.btn {
+  flex: 1;
+  display: block;
+  margin: 10px;
+}
+
+.signup-btn {
+  width: 100%;
+  background-color: #42b72a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.signup-btn:hover {
+  background-color: #36a420;
+}

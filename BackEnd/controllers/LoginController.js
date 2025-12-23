@@ -1,29 +1,35 @@
-// ... existing code ...
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 exports.login = async (req, res) => {
   try {
-        const { username, password } = req.body || {};
+    const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required.' });
+      return res.status(400).json({ message: 'Vui lòng nhập username và password.' });
     }
 
-    const user = await User.findOne({ username: username.trim() });
+    const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password.' });
+      return res.status(401).json({ message: 'Sai tên đăng nhập hoặc mật khẩu.' });
     }
 
-    const isMatch = await user.comparePassword(password);
+    // So sánh password đã hash
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid username or password.' });
+      return res.status(401).json({ message: 'Sai tên đăng nhập hoặc mật khẩu.' });
     }
 
-    // Nếu cần trả thêm thông tin (ví dụ JWT) thì tạo token ở đây.
-    // Hiện tại trả về thông tin user đã loại bỏ password bởi toJSON() trong model.
-    return res.status(200).json({ message: 'Login successful', user });
+    return res.status(200).json({
+      message: 'Đăng nhập thành công',
+      user: {
+        id: user._id,
+        username: user.username
+      }
+    });
+
   } catch (err) {
-    console.error('Login error:', err);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error('Lỗi login:', err);
+    return res.status(500).json({ message: 'Lỗi hệ thống, vui lòng thử lại sau.' });
   }
 };

@@ -3,7 +3,7 @@ const totalCountEl = document.getElementById("totalCount");
 const searchInput = document.getElementById("searchInput");
 
 //API: url của BACKEND (server node.js)
-const API_NHANKHAU = "http://localhost:5000/api/nhankhau";
+const API_NHANKHAU = "http://localhost:3000/api/nhankhau";
 
 let danhSachNhanKhau = []; //mảng để lưu dữ liệu nhân khẩu từ server gửi về
 
@@ -51,8 +51,8 @@ function renderTable(data) {
                     item.IDHoKhau
                   }</td>
                   <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${
-                    item.diaChi
-                  }">${item.diaChi}</td>
+                    item.DiaChi
+                  }">${item.DiaChi}</td>
               `;
     tableBody.appendChild(row);
   });
@@ -73,87 +73,3 @@ searchInput.addEventListener("input", (e) => {
 });
 
 fetchNhanKhau();
-
-// Dữ liệu giả lập (Đã nhân bản lên để test scroll)
-// const baseData = [
-//   {
-//     id: 1,
-//     name: "Nguyễn Văn An",
-//     dob: "15/05/1985",
-//     cccd: "001085000123",
-//     phone: "0912345678",
-//     houseCode: "HK001",
-//     address: "Số 12, Ngõ 5, Đường Láng, Hà Nội",
-//   },
-//   {
-//     id: 2,
-//     name: "Trần Thị Bích",
-//     dob: "20/10/1990",
-//     cccd: "001090000456",
-//     phone: "0987654321",
-//     houseCode: "HK002",
-//     address: "P504, Chung cư A1, Cầu Giấy",
-//   },
-//   {
-//     id: 3,
-//     name: "Lê Văn Cường",
-//     dob: "02/09/1978",
-//     cccd: "001078000789",
-//     phone: "0909090909",
-//     houseCode: "HK001",
-//     address: "Số 12, Ngõ 5, Đường Láng, Hà Nội",
-//   },
-//   {
-//     id: 4,
-//     name: "Phạm Minh Đức",
-//     dob: "12/12/2000",
-//     cccd: "001200000321",
-//     phone: "0911223344",
-//     houseCode: "HK003",
-//     address: "Số 88, Phố Huế, Hai Bà Trưng",
-//   },
-//   {
-//     id: 5,
-//     name: "Hoàng Thu Trang",
-//     dob: "08/03/1995",
-//     cccd: "001095000654",
-//     phone: "0966778899",
-//     houseCode: "HK004",
-//     address: "Biệt thự số 5, KĐT Ciputra",
-//   },
-//   {
-//     id: 6,
-//     name: "Đặng Văn Hùng",
-//     dob: "25/07/1982",
-//     cccd: "001082000987",
-//     phone: "0321654987",
-//     houseCode: "HK002",
-//     address: "P504, Chung cư A1, Cầu Giấy",
-//   },
-//   {
-//     id: 7,
-//     name: "Vũ Thị Mai",
-//     dob: "01/01/1999",
-//     cccd: "001099000147",
-//     phone: "0944556677",
-//     houseCode: "HK005",
-//     address: "Ngách 22/5, Kim Mã, Ba Đình",
-//   },
-//   {
-//     id: 8,
-//     name: "Ngô Quang Hải",
-//     dob: "30/04/1988",
-//     cccd: "001088000258",
-//     phone: "0933445566",
-//     houseCode: "HK006",
-//     address: "Số 102, Trần Phú, Hà Đông",
-//   },
-// ];
-
-// // Nhân bản dữ liệu lên 3 lần (24 bản ghi) để test scroll
-// let demographicsData = [];
-// for (let i = 0; i < 3; i++) {
-//   demographicsData = demographicsData.concat(baseData);
-// }
-
-// renderTable(demographicsData);

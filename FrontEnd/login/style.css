@@ -10,41 +10,43 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 1000px;
   max-width: 95%;
   gap: 40px;
-}
-
-/* --- Cột trái --- */
-.left-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.project-logo {
-  width: 250px; /* 👉 Thay đổi kích thước logo tùy thích */
-  margin-bottom: 20px;
-}
-
-.description {
-  font-size: 18px;
-  color: #555;
-  line-height: 1.5;
-  max-width: 400px;
+  flex-wrap: wrap;
 }
 
 /* --- Cột phải --- */
 .right-section {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-logo {
+  width: 250px;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-weight: bold;
+  font-size: 24px;
+  color: #555;
+  line-height: 1.2;
+}
+
+/* --- Cột trái --- */
+.left-section {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -105,8 +107,10 @@ hr {
 }
 
 .create-btn {
+  display: inline-block;
   background-color: #42b72a;
   color: white;
+  text-decoration: none;
   border: none;
   padding: 12px 20px;
   border-radius: 6px;
@@ -117,20 +121,4 @@ hr {
 
 .create-btn:hover {
   background-color: #36a420;
-}
-
-.create-page {
-  font-size: 14px;
-  color: #606770;
-  margin-top: 20px;
-}
-
-.create-page a {
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.create-page a:hover {
-  text-decoration: underline;
 }

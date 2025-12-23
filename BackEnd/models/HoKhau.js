@@ -1,10 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const HoKhauSchema = new mongoose.Schema({
-    maHoKhau: { type: String, required: true, unique: true },
-    diaChi: { type: String, required: true },
-    idChuHo: { type: mongoose.Schema.Types.ObjectId, ref: 'NhanKhau', required: true },
-    idThanhVien: [{ type: mongoose.Schema.Types.ObjectId, ref: 'NhanKhau' }],
-}, { timestamps: true });
+  IDHoKhau: { type: String, required: true, unique: true },
+  DiaChi: { type: String, required: true },
 
-module.exports = mongoose.model('HoKhau', HoKhauSchema);
+  TenChuHo: { type: String, required: true },
+  NgaySinh: { type: String, required: true },
+  cccd: { type: String, required: true },
+  sdt: { type: String, required: true },
+
+  NgayLap: { type: String, required: true },
+  soThanhVien: { type: Number, default: 1 }
+});
+
+module.exports = mongoose.model("HoKhau", HoKhauSchema);
