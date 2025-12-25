@@ -1,37 +1,99 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng ký</title>
     <link rel="stylesheet" href="dangky.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="left-section">
+</head>
+<body>
+<div class="container">
+    <!-- Bên trái: Form đăng ký -->
+    <div class="left-section">
         <div class="signup-box">
-          <input type="text" id="fullname" placeholder="Họ và tên" />
-          <input type="text" id="username" placeholder="Tên đăng nhập" />
-          <input type="text" id="password" placeholder="Password" />
-          <div class="btn">
-            <button class="signup-btn" id="signup-btn">Đăng ký</button>
-            <p style="margin-top: 15px">
-              Đã có tài khoản?
-              <a
-                href="../login/index.html"
-                style="color: #1877f2; text-decoration: none"
-                >Đăng nhập ngay</a
-              >
-            </p>
-          </div>
+            <h2 style="margin-bottom: 10px">Đăng ký tài khoản</h2>
+
+            <input
+                    type="text"
+                    id="fullname"
+                    placeholder="Họ và tên"
+                    required
+            />
+
+            <input
+                    type="text"
+                    id="username"
+                    placeholder="Tên đăng nhập"
+                    required
+            />
+
+            <input
+                    type="password"
+                    id="password"
+                    placeholder="Mật khẩu"
+                    required
+            />
+
+            <input
+                    type="password"
+                    id="confirm-password"
+                    placeholder="Nhập lại mật khẩu"
+                    required
+            />
+
+            <div class="btn">
+                <button class="signup-btn" id="signup-btn">Đăng ký</button>
+
+                <p style="margin-top: 15px">
+                    Đã có tài khoản?
+                    <a
+                            href="../login/login.html"
+                            style="color: #1877f2; text-decoration: none"
+                    >
+                        Đăng nhập ngay
+                    </a>
+                </p>
+            </div>
+
+            <!-- HƯỚNG DẪN ĐĂNG KÝ -->
+            <div
+                    style="
+              text-align: left;
+              margin-top: 15px;
+              font-size: 14px;
+              color: #555;
+              background-color: #f5f6f7;
+              padding: 10px;
+              border-radius: 6px;
+            "
+            >
+                <b>Hướng dẫn đăng ký:</b>
+                <ul style="padding-left: 18px; margin-top: 8px">
+                    <li>Họ và tên: nhập đầy đủ tên thật của bạn.</li>
+                    <li>Tên đăng nhập: không chứa khoảng trắng.</li>
+                    <li>
+                        Mật khẩu phải có:
+                        <ul style="padding-left: 18px; margin-top: 5px">
+                            <li>Ít nhất <b>8 ký tự</b></li>
+                            <li>Có <b>chữ hoa</b> (A-Z)</li>
+                            <li>Có <b>chữ thường</b> (a-z)</li>
+                            <li>Có <b>chữ số</b> (0-9)</li>
+                        </ul>
+                    </li>
+                    <li>Nhập lại mật khẩu phải trùng khớp.</li>
+                </ul>
+            </div>
         </div>
-      </div>
-      <div class="right-section">
+    </div>
+
+    <!-- Bên phải: Logo + mô tả -->
+    <div class="right-section">
         <img src="../Image/favicon3.png" alt="Logo" class="project-logo" />
         <p class="description">Hệ thống Quản lý Dân cư Blue Moon</p>
-      </div>
     </div>
-    <script src="dangky.js"></script>
-  </body>
+</div>
+
+<script src="dangky.js"></script>
+</body>
 </html>

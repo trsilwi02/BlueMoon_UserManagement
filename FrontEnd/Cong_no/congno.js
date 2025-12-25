@@ -1,251 +1,210 @@
-// // Lấy các element cần thiết
-// const modal = document.getElementById("invoiceModal");
+const API_SUMMARY = "http://localhost:3000/api/congno/summary";
+const API_CONGNO  = "http://localhost:3000/api/congno";
 
-// // Hàm mở Modal
-// function openModal(btn) {
-//   // 1. Tìm thẻ <tr> cha của nút vừa bấm
-//   const tr = btn.closest("tr");
+/* ===============================
+   ELEMENTS
+   =============================== */
+const tableBody    = document.getElementById("tableBody");
+const modalOverlay = document.getElementById("modalOverlay");
+const detailOverlay = document.getElementById("detailOverlay");
 
-//   // 2. Lấy dữ liệu cơ bản từ các cột (td)
-//   // [0]=Mã, [1]=Tên, [2]=Kỳ, [3]=Tổng, [4]=Còn nợ
-//   const tds = tr.querySelectorAll("td");
-//   const maHo = tds[0].innerText;
-//   const tenChuHo = tds[1].innerText;
-//   const tongTien = tds[3].innerText;
+const btnAdd   = document.getElementById("newadd");
+const btnClose = document.getElementById("close");
+const btnSave  = document.getElementById("save");
 
-//   // 3. Lấy dữ liệu chi tiết ẩn trong data-attributes
-//   // dataset.dien sẽ lấy giá trị của data-dien=""
-//   const dien = tr.dataset.dien;
-//   const nuoc = tr.dataset.nuoc;
-//   const rac = tr.dataset.rac;
-//   const ql = tr.dataset.ql;
+const searchInput = document.getElementById("searchInput");
+const totalDebtEl = document.getElementById("totalDebt");
 
-//   // 4. Đổ dữ liệu vào các ô input trong Modal
-//   document.getElementById("modalMaHo").value = maHo;
-//   document.getElementById("modalChuHo").value = tenChuHo;
+/* ===============================
+   STATE
+   =============================== */
+let danhSachCongNo = [];
 
-//   // Thêm ' đ' vào sau số tiền cho đẹp nếu chưa có
-//   document.getElementById("modalDien").value = formatMoney(dien);
-//   document.getElementById("modalNuoc").value = formatMoney(nuoc);
-//   document.getElementById("modalRac").value = formatMoney(rac);
-//   document.getElementById("modalQuanLy").value = formatMoney(ql);
+/* ===============================
+   UTIL
+   =============================== */
+const formatMoney = (num = 0) =>
+  Number(num).toLocaleString("vi-VN") + " đ";
 
-//   document.getElementById("modalTong").value = tongTien;
-
-//   // 5. Hiển thị Modal
-//   modal.classList.add("show");
-// }
-
-// // Hàm đóng Modal
-// function closeModal() {
-//   modal.classList.remove("show");
-// }
-
-// // Hàm phụ trợ: Nếu trong data chưa có chữ 'đ' thì thêm vào
-// function formatMoney(value) {
-//   if (!value) return "0 đ";
-//   if (value.includes("đ")) return value;
-//   return value + " đ";
-// }
-
-// // Đóng modal khi click ra vùng đen bên ngoài
-// window.onclick = function (event) {
-//   if (event.target == modal) {
-//     closeModal();
-//   }
-// };
-
-/**
- * Dữ liệu công nợ giả lập
- * Các thuộc tính 'data-...' trong HTML sẽ được dùng để populate modal
- */
-const mockCongNoData = [
-  {
-    maHo: 'A101',
-    tenChuHo: 'Nguyễn Thành Lương',
-    ky: '11/2025',
-    tongTien: 1250000,
-    conNo: 0,
-    chiTiet: {
-      dien: 850000,
-      nuoc: 150000,
-      rac: 50000,
-      ql: 200000
-    }
-  },
-  {
-    maHo: 'B205',
-    tenChuHo: 'Trần Thị B',
-    ky: '11/2025',
-    tongTien: 2100000,
-    conNo: 2100000,
-    chiTiet: {
-      dien: 1500000,
-      nuoc: 300000,
-      rac: 50000,
-      ql: 250000
-    }
-  },
-  {
-    maHo: 'C309',
-    tenChuHo: 'Lê Văn C',
-    ky: '11/2025',
-    tongTien: 1350000,
-    conNo: 500000,
-    chiTiet: {
-      dien: 900000,
-      nuoc: 200000,
-      rac: 50000,
-      ql: 200000
-    }
-  },
-  // Thêm dữ liệu giả lập khác nếu cần...
-];
-
-/**
- * Hàm định dạng số thành chuỗi tiền tệ Việt Nam (ví dụ: 1.250.000)
- * @param {number} number - Số tiền cần định dạng
- * @returns {string} Chuỗi tiền tệ
- */
-const formatCurrency = (number) => {
-  return number.toLocaleString('vi-VN');
-};
-
-/**
- * 1. fetchCongNo: Giả lập việc gọi API lấy dữ liệu công nợ
- * @returns {Promise<Array<Object>>} Danh sách công nợ
- */
-const fetchCongNo = async () => {
-  // Giả lập độ trễ của API call
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // Trả về dữ liệu giả lập
-  return mockCongNoData;
-};
-
-/**
- * 2. renderTable: Render dữ liệu công nợ ra bảng HTML
- * @param {Array<Object>} data - Dữ liệu công nợ để hiển thị
- */
-const renderTable = (data) => {
-  const tableBody = document.querySelector('.table-section tbody');
-  if (!tableBody) return;
-
-  // Cập nhật tổng nợ cần thu
-  const totalDebtElement = document.querySelector('.stats-number');
-  const totalDebt = data.reduce((sum, item) => sum + item.conNo, 0);
-  if (totalDebtElement) {
-    totalDebtElement.textContent = `${formatCurrency(totalDebt)} đ`;
+/* ===============================
+   1. LOAD DANH SÁCH CÔNG NỢ
+   =============================== */
+async function fetchCongNo() {
+  try {
+    const res = await fetch(API_SUMMARY);
+    danhSachCongNo = await res.json();
+    renderTable(danhSachCongNo);
+  } catch (err) {
+    console.error("Lỗi tải công nợ:", err);
   }
-
-  // Tạo hàng (row) cho bảng
-  const rowsHtml = data.map(item => {
-    // Xác định màu cho cột 'Còn nợ'
-    const debtColor = item.conNo > 0 ? '#d32f2f' : 'green';
-
-    return `
-      <tr 
-        data-maho="${item.maHo}" 
-        data-chuho="${item.tenChuHo}"
-        data-ky="${item.ky}"
-        data-dien="${formatCurrency(item.chiTiet.dien)}" 
-        data-nuoc="${formatCurrency(item.chiTiet.nuoc)}" 
-        data-rac="${formatCurrency(item.chiTiet.rac)}" 
-        data-ql="${formatCurrency(item.chiTiet.ql)}"
-        data-tong="${formatCurrency(item.tongTien)}"
-      >
-        <td><strong>${item.maHo}</strong></td>
-        <td>${item.tenChuHo}</td>
-        <td>${item.ky}</td>
-        <td style="text-align: right">${formatCurrency(item.tongTien)}</td>
-        <td style="text-align: right; color: ${debtColor}; font-weight: bold">${formatCurrency(item.conNo)}</td>
-        <td class="action-cell">
-          <button class="btn btn-detail" onclick="openModal(this)">Chi tiết</button>
-        </td>
-      </tr>
-    `;
-  }).join('');
-
-  tableBody.innerHTML = rowsHtml;
-};
-
-/**
- * 3. Xử lý sự kiện tìm kiếm và lọc dữ liệu
- */
-const searchInput = document.querySelector('.search-box input[type="text"]');
-if (searchInput) {
-  searchInput.addEventListener('input', async (e) => {
-    const searchTerm = e.target.value.toLowerCase().trim();
-    let currentData = await fetchCongNo(); // Lấy lại dữ liệu gốc
-
-    const filteredData = currentData.filter(item => {
-      // Tìm kiếm theo Mã hộ hoặc Tên chủ hộ
-      return item.maHo.toLowerCase().includes(searchTerm) || 
-             item.tenChuHo.toLowerCase().includes(searchTerm);
-    });
-
-    renderTable(filteredData);
-  });
 }
 
-/**
- * 4. openModal: Xử lý mở modal Chi tiết và đổ dữ liệu
- * @param {HTMLButtonElement} button - Nút 'Chi tiết' được click
- */
-const openModal = (button) => {
-  const row = button.closest('tr'); // Lấy hàng (tr) chứa nút
-  const modal = document.getElementById('invoiceModal');
+/* ===============================
+   2. RENDER TABLE
+   =============================== */
+function renderTable(data) {
+  tableBody.innerHTML = "";
+  let tongNo = 0;
 
-  if (row && modal) {
-    // Lấy dữ liệu từ các thuộc tính data- của thẻ <tr>
-    const maHo = row.dataset.maho;
-    const chuHo = row.dataset.chuho;
-    const ky = row.dataset.ky;
-    const dien = row.dataset.dien;
-    const nuoc = row.dataset.nuoc;
-    const rac = row.dataset.rac;
-    const ql = row.dataset.ql;
-    const tong = row.dataset.tong;
+  data.forEach(item => {
+    tongNo += item.conNo || 0;
 
-    // Đổ dữ liệu vào các input trong modal
-    document.getElementById('modalMaHo').value = `${maHo} - Kỳ ${ky}`;
-    document.getElementById('modalChuHo').value = chuHo;
-    document.getElementById('modalDien').value = dien;
-    document.getElementById('modalNuoc').value = nuoc;
-    document.getElementById('modalRac').value = rac;
-    document.getElementById('modalQuanLy').value = ql;
-    document.getElementById('modalTong').value = `${tong} đ`;
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td style="text-align:center;font-weight:bold">${item.maHo}</td>
+      <td>${item.tenChuHo}</td>
+      <td style="text-align:center">${item.ky || "-"}</td>
+      <td class="total-money">${formatMoney(item.tongTien)}</td>
+      <td class="debt-money">${formatMoney(item.conNo)}</td>
+      <td class="task-btn">
+        <button class="action-btn view-btn"
+          onclick='xemChiTiet(${JSON.stringify(item)})'>
+          Xem
+        </button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
 
-    // Hiển thị modal
-    modal.style.display = 'flex';
-  }
+  totalDebtEl.textContent = formatMoney(tongNo);
+}
+
+/* ===============================
+   3. MODAL THÊM CÔNG NỢ
+   =============================== */
+btnAdd.onclick = () => {
+  modalOverlay.style.display = "flex";
+  clearForm();
 };
 
-/**
- * 5. closeModal: Đóng modal Chi tiết
- */
-const closeModal = () => {
-  const modal = document.getElementById('invoiceModal');
-  if (modal) {
-    modal.style.display = 'none';
-  }
+btnClose.onclick = () => {
+  modalOverlay.style.display = "none";
 };
 
-// Đảm bảo hàm này có thể được gọi từ HTML (trong nút Chi tiết)
-window.openModal = openModal;
-window.closeModal = closeModal;
+function clearForm() {
+  document.getElementById("MaHo").value = "";
+  document.getElementById("HanThanhToan").value = "";
+  document.getElementById("phiDien").value = "";
+  document.getElementById("phiNuoc").value = "";
+  document.getElementById("phiRac").value  = "";
+  document.getElementById("phiQL").value   = "";
+  document.getElementById("TongTien").value = "0 đ";
+}
 
-/**
- * Khởi tạo ứng dụng: Lấy dữ liệu và render bảng khi trang load
- */
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const data = await fetchCongNo();
-    renderTable(data);
-  } catch (error) {
-    console.error("Lỗi khi tải dữ liệu công nợ:", error);
-    // Có thể thêm thông báo lỗi cho người dùng ở đây
-  }
+/* ===============================
+   4. TÍNH TỔNG TIỀN
+   =============================== */
+function tinhTongTien() {
+  const dien = Number(document.getElementById("phiDien").value || 0);
+  const nuoc = Number(document.getElementById("phiNuoc").value || 0);
+  const rac  = Number(document.getElementById("phiRac").value  || 0);
+  const ql   = Number(document.getElementById("phiQL").value   || 0);
+
+  const total = dien + nuoc + rac + ql;
+  document.getElementById("TongTien").value = formatMoney(total);
+
+  return { dien, nuoc, rac, ql, total };
+}
+
+["phiDien","phiNuoc","phiRac","phiQL"].forEach(id => {
+  document.getElementById(id).addEventListener("input", tinhTongTien);
 });
 
-//BackendGia lập
+/* ===============================
+   5. LƯU CÔNG NỢ
+   =============================== */
+btnSave.onclick = async () => {
+  const maHo = document.getElementById("MaHo").value.trim();
+  const hanThanhToan = document.getElementById("HanThanhToan").value;
+
+  if (!maHo || !hanThanhToan) {
+    alert("Vui lòng nhập mã hộ và hạn thanh toán!");
+    return;
+  }
+
+  const { dien, nuoc, rac, ql, total } = tinhTongTien();
+
+  if (total <= 0) {
+    alert("Vui lòng nhập ít nhất một khoản phí!");
+    return;
+  }
+
+  const danhSachPhi = [
+    { loaiPhi: "dien", soTien: dien },
+    { loaiPhi: "nuoc", soTien: nuoc },
+    { loaiPhi: "rac",  soTien: rac  },
+    { loaiPhi: "ql",   soTien: ql   }
+  ].filter(p => p.soTien > 0);
+
+  try {
+    for (const phi of danhSachPhi) {
+      const res = await fetch(API_CONGNO, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          hoKhauId: maHo,
+          loaiPhi: phi.loaiPhi,
+          soTien: phi.soTien,
+          hanThanhToan
+        })
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        alert("Lỗi: " + result.message);
+        return;
+      }
+    }
+
+    alert("Thêm công nợ thành công!");
+    modalOverlay.style.display = "none";
+    fetchCongNo();
+
+  } catch (error) {
+    alert("Không thể kết nối tới server!");
+  }
+};
+
+/* ===============================
+   6. XEM CHI TIẾT CÔNG NỢ
+   =============================== */
+window.xemChiTiet = (item) => {
+  detailOverlay.style.display = "flex";
+
+  document.getElementById("dMaHo").value  = item.maHo;
+  document.getElementById("dChuHo").value = item.tenChuHo;
+  document.getElementById("dKy").value    = item.ky;
+
+  document.getElementById("dDien").value =
+    formatMoney(item.chiTiet?.dien || 0);
+  document.getElementById("dNuoc").value =
+    formatMoney(item.chiTiet?.nuoc || 0);
+  document.getElementById("dRac").value =
+    formatMoney(item.chiTiet?.rac || 0);
+  document.getElementById("dQL").value =
+    formatMoney(item.chiTiet?.ql || 0);
+
+  document.getElementById("dTong").value =
+    formatMoney(item.tongTien);
+};
+
+window.closeDetail = () => {
+  detailOverlay.style.display = "none";
+};
+
+/* ===============================
+   7. TÌM KIẾM
+   =============================== */
+searchInput.oninput = () => {
+  const keyword = searchInput.value.toLowerCase();
+  const filtered = danhSachCongNo.filter(item =>
+    item.maHo.toLowerCase().includes(keyword) ||
+    item.tenChuHo.toLowerCase().includes(keyword)
+  );
+  renderTable(filtered);
+};
+
+/* ===============================
+   INIT
+   =============================== */
+fetchCongNo();

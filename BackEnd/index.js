@@ -25,8 +25,12 @@ const startServer = async () => {
     const HoKhauRoute = require("./routes/HoKhauRoute.js");
     const CongNoRoute = require("./routes/CongNoRoute.js");
     const QuyRoute = require("./routes/QuyRoute.js");
+    const PhuongTienRoute = require("./routes/PhuongTienRoute.js");
+
+
 
     // ====== SỬ DỤNG API ======
+    app.use("/api/phuongtien", PhuongTienRoute);
     app.use("/api/user", UserRoute);
     app.use("/api/nhankhau", NhanKhauRoute);  // ⭐ Module mới
     app.use("/api/hokhau", HoKhauRoute);

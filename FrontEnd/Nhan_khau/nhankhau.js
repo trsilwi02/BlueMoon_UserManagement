@@ -1,75 +1,144 @@
+/* ===============================
+   DOM
+   =============================== */
 const tableBody = document.getElementById("tableBody");
 const totalCountEl = document.getElementById("totalCount");
 const searchInput = document.getElementById("searchInput");
 
-//API: url của BACKEND (server node.js)
+/* ===============================
+   API
+   =============================== */
 const API_NHANKHAU = "http://localhost:3000/api/nhankhau";
 
-let danhSachNhanKhau = []; //mảng để lưu dữ liệu nhân khẩu từ server gửi về
+/* ===============================
+   STATE
+   =============================== */
+let danhSachNhanKhau = [];
 
-//gọi api để lấy dữ liệu từ database: Quy trình: Frontend gọi API -> Backend nhận lệnh -> Backend lấy từ MongoDB -> Trả về Frontend -> Frontend hiển thị lên bảng
+/* ===============================
+   FETCH DATA
+   =============================== */
 async function fetchNhanKhau() {
   try {
-    const response = await fetch(API_NHANKHAU); //goi server
-    const data = await response.json(); //nhan du lieu va doi sang kieu json
-    danhSachNhanKhau = data; //luu vao mang bien toan cuc
-    renderTable(danhSachNhanKhau); //ve du lieu len bang
+    const res = await fetch(API_NHANKHAU);
+    if (!res.ok) throw new Error("Không lấy được dữ liệu");
+
+    const data = await res.json();
+    danhSachNhanKhau = Array.isArray(data) ? data : [];
+    renderTable(danhSachNhanKhau);
+
   } catch (error) {
     console.error("Lỗi kết nối Server:", error);
     alert("Không kết nối được với Server!");
   }
 }
 
-//ham ve bang (render)
+/* ===============================
+   FORMAT DATE
+   =============================== */
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  if (dateStr.includes("-")) {
+    const [y, m, d] = dateStr.split("-");
+    return `${d}/${m}/${y}`;
+  }
+  return dateStr;
+}
+
+/* ===============================
+   LẤY ĐỊA CHỈ (AN TOÀN)
+   =============================== */
+function getDiaChi(item) {
+  return (
+    item.DiaChi ||
+    item.hoKhau?.DiaChi ||
+    ""
+  );
+}
+
+/* ===============================
+   RENDER TABLE
+   =============================== */
 function renderTable(data) {
   tableBody.innerHTML = "";
-  if (data.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 20px; color: #64748b;">Không tìm thấy kết quả nào</td></tr>`;
-    totalCountEl.innerText = 0; //hien thi text count la bang 0
+
+  if (!data || data.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center;padding:20px;color:#64748b;">
+          Không tìm thấy kết quả nào
+        </td>
+      </tr>
+    `;
+    totalCountEl.innerText = 0;
     return;
   }
 
   data.forEach((item, index) => {
-    const row = document.createElement("tr");
+    const diaChi = getDiaChi(item);
 
-    let displayDate = item.NgaySinh;
-    if (item.NgaySinh && item.NgaySinh.includes("-")) {
-      const parts = item.NgaySinh.split("-"); // Tách 2023-11-27
-      if (parts.length === 3)
-        displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
+    const row = document.createElement("tr");
     row.innerHTML = `
-                  <td style="text-align: center">${index + 1}</td>
-                  <td style="font-weight: 500">${item.HoVaTen}</td>
-                  <td style="text-align: center">${displayDate}</td>
-                  <td style="text-align: center">${item.GioiTinh || "Khác"}</td>
-                  <td style="text-align: center"><span class="tag-cccd">${
-                    item.cccd
-                  }</span></td>
-                  <td style="text-align: center">${item.sdt}</td>
-                  <td style="text-align:center; font-weight: 500;">${
-                    item.IDHoKhau
-                  }</td>
-                  <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${
-                    item.DiaChi
-                  }">${item.DiaChi}</td>
-              `;
+      <td style="text-align:center">${index + 1}</td>
+
+      <td style="font-weight:500">
+        ${item.HoVaTen || ""}
+      </td>
+
+      <td style="text-align:center">
+        ${formatDate(item.NgaySinh)}
+      </td>
+
+      <td style="text-align:center">
+        ${item.GioiTinh || "Khác"}
+      </td>
+
+      <td style="text-align:center">
+        <span class="tag-cccd">${item.cccd || ""}</span>
+      </td>
+
+      <td style="text-align:center">
+        ${item.sdt || ""}
+      </td>
+
+      <td style="text-align:center;font-weight:500">
+        ${item.IDHoKhau || ""}
+      </td>
+
+      <td
+        style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+        title="${diaChi}"
+      >
+        ${diaChi}
+      </td>
+    `;
     tableBody.appendChild(row);
   });
 
-  totalCountEl.innerText = data.length; //dem so nguoi hien thi
+  totalCountEl.innerText = data.length;
 }
 
-//Tim kiem
+/* ===============================
+   SEARCH
+   =============================== */
 searchInput.addEventListener("input", (e) => {
-  const keyword = e.target.value.toLowerCase();
-  const filteredData = danhSachNhanKhau.filter(
-    (item) =>
-      item.HoVaTen.toLowerCase().includes(keyword) ||
-      item.cccd.includes(keyword) ||
-      item.sdt.includes(keyword)
+  const keyword = e.target.value.trim().toLowerCase();
+
+  if (!keyword) {
+    renderTable(danhSachNhanKhau);
+    return;
+  }
+
+  const filtered = danhSachNhanKhau.filter(item =>
+    (item.HoVaTen || "").toLowerCase().includes(keyword) ||
+    (item.cccd || "").includes(keyword) ||
+    (item.sdt || "").includes(keyword)
   );
-  renderTable(filteredData);
+
+  renderTable(filtered);
 });
 
+/* ===============================
+   INIT
+   =============================== */
 fetchNhanKhau();

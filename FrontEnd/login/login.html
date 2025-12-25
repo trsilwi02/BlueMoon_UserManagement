@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+<div class="container">
+    <!-- Cột trái: form đăng nhập -->
+    <div class="left-section">
+        <div class="login-box">
+            <input
+                    type="text"
+                    id="username"
+                    placeholder="Tên đăng nhập"
+                    required
+            />
+
+            <input
+                    type="password"
+                    id="password"
+                    placeholder="Mật khẩu"
+                    required
+            />
+
+            <button class="login-btn" id="login-btn">Đăng nhập</button>
+
+            <a href="#" class="forgot">Quên mật khẩu?</a>
+            <hr />
+
+            <a class="create-btn" href="../signin/dangky.html">
+                Tạo tài khoản mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Cột phải -->
+    <div class="right-section">
+        <img src="../Image/favicon3.png" alt="Logo" class="project-logo" />
+        <p class="description">Hệ thống Quản lý Dân cư Blue Moon</p>
+    </div>
+</div>
+
+<!-- JS LOGIN -->
+<script src="login.js"></script>
+</body>
+</html>
