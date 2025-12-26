@@ -58,25 +58,55 @@ exports.create = async (req, res) => {
       NgayLap
     } = req.body;
 
-    // 1️⃣ Kiểm tra trùng mã hộ
+    /* ========= VALIDATE BẮT BUỘC ========= */
+    if (!IDHoKhau || !TenChuHo || !DiaChi || !cccd || !sdt) {
+      return res.status(400).json({
+        message: "Vui lòng nhập đầy đủ thông tin bắt buộc!"
+      });
+    }
+
+    /* ========= VALIDATE CCCD ========= */
+    if (!/^\d{12}$/.test(cccd)) {
+      return res.status(400).json({
+        message: "CCCD phải gồm đúng 12 chữ số!"
+      });
+    }
+
+    /* ========= VALIDATE SĐT ========= */
+    if (!/^\d{10}$/.test(sdt)) {
+      return res.status(400).json({
+        message: "Số điện thoại phải gồm đúng 10 chữ số!"
+      });
+    }
+
+    /* ========= KIỂM TRA TRÙNG CCCD ========= */
+    const cccdExists = await NhanKhau.findOne({ cccd });
+    if (cccdExists) {
+      return res.status(400).json({
+        message: "CCCD đã tồn tại trong hệ thống!"
+      });
+    }
+
+    /* ========= KIỂM TRA TRÙNG MÃ HỘ ========= */
     const exists = await HoKhau.findOne({ IDHoKhau });
     if (exists) {
       return res.status(400).json({ message: "Mã hộ khẩu đã tồn tại!" });
     }
 
-    // 2️⃣ Tạo HỘ KHẨU
+    /* ========= TẠO HỘ KHẨU ========= */
     const newHoKhau = await HoKhau.create({
       IDHoKhau,
       DiaChi,
       TenChuHo,
       NgaySinh,
+      GioiTinh: GioiTinh || "Khác",
       cccd,
       sdt,
       NgayLap,
       soThanhVien: 1
     });
 
-    // 3️⃣ Tạo NHÂN KHẨU = CHỦ HỘ ⭐
+    /* ========= TẠO NHÂN KHẨU = CHỦ HỘ ========= */
     await NhanKhau.create({
       HoVaTen: TenChuHo,
       NgaySinh,
@@ -102,7 +132,6 @@ exports.create = async (req, res) => {
  * ===============================
  * Cập nhật hộ khẩu
  * PUT /api/hokhau/:id
- * (KHÔNG sửa chủ hộ ở đây)
  * ===============================
  */
 exports.update = async (req, res) => {
@@ -130,29 +159,23 @@ exports.update = async (req, res) => {
  * ===============================
  * Xóa hộ khẩu
  * DELETE /api/hokhau/:id
- * 👉 XÓA LUÔN TOÀN BỘ NHÂN KHẨU
  * ===============================
  */
 exports.delete = async (req, res) => {
   try {
     const idHoKhau = req.params.id;
 
-    // 1️⃣ Kiểm tra hộ khẩu
     const hk = await HoKhau.findOne({ IDHoKhau: idHoKhau });
     if (!hk) {
       return res.status(404).json({ message: "Hộ khẩu không tồn tại!" });
     }
 
-    // 2️⃣ XÓA TOÀN BỘ NHÂN KHẨU
     await NhanKhau.deleteMany({ IDHoKhau: idHoKhau });
 
-    // 3️⃣ XÓA TOÀN BỘ CÔNG NỢ
     await CongNo.deleteMany({ hoKhauId: hk._id });
 
-    //Xoa phuong tien
-    await PhuongTien.deleteMany({ IDHoKhau });
+    await PhuongTien.deleteMany({ IDHoKhau: idHoKhau });
 
-    // 4️⃣ XÓA HỘ KHẨU
     await HoKhau.findOneAndDelete({ IDHoKhau: idHoKhau });
 
     res.json({

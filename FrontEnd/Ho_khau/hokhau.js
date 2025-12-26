@@ -38,9 +38,9 @@ function renderTable(data) {
       <td style="text-align:center">${hk.NgayLap}</td>
       <td class="task-btn">
         <button class="action-btn view-btn"
-          onclick="xemChiTiet('${hk.IDHoKhau}')">Xem</button>
+          onclick="window.xemChiTiet('${hk.IDHoKhau}')">Xem</button>
         <button class="action-btn delete-btn"
-          onclick="xoaHoKhau('${hk.IDHoKhau}')">Xóa</button>
+          onclick="window.xoaHoKhau('${hk.IDHoKhau}')">Xóa</button>
       </td>
     `;
     tableBody.appendChild(row);
@@ -48,7 +48,7 @@ function renderTable(data) {
 }
 
 /* ===============================
-   3. MODAL THÊM HỘ KHẨU
+   3. MODAL
    =============================== */
 btnAdd.onclick = () => {
   modalOverlay.style.display = "flex";
@@ -64,23 +64,36 @@ function clearForm() {
   document.getElementById("DiaChi").value = "";
   document.getElementById("TenChuHo").value = "";
   document.getElementById("NgaySinh").value = "";
+  document.getElementById("GioiTinh").value = "Khác";
   document.getElementById("cccd").value = "";
   document.getElementById("sdt").value = "";
 }
 
 /* ===============================
-   4. LƯU HỘ KHẨU (TẠO + CHỦ HỘ)
+   4. LƯU HỘ KHẨU (KHỚP BACKEND)
    =============================== */
 btnSave.onclick = async () => {
   const IDHoKhau = document.getElementById("IDHoKhau").value.trim();
   const DiaChi = document.getElementById("DiaChi").value.trim();
   const TenChuHo = document.getElementById("TenChuHo").value.trim();
   const NgaySinh = document.getElementById("NgaySinh").value;
+  const GioiTinh = document.getElementById("GioiTinh").value;
   const cccd = document.getElementById("cccd").value.trim();
   const sdt = document.getElementById("sdt").value.trim();
 
-  if (!IDHoKhau || !TenChuHo || !DiaChi || !cccd) {
+  /* ===== VALIDATE GIỐNG BACKEND ===== */
+  if (!IDHoKhau || !TenChuHo || !DiaChi || !cccd || !sdt) {
     alert("Vui lòng nhập đầy đủ thông tin bắt buộc!");
+    return;
+  }
+
+  if (!/^\d{12}$/.test(cccd)) {
+    alert("CCCD phải gồm đúng 12 chữ số!");
+    return;
+  }
+
+  if (!/^\d{10}$/.test(sdt)) {
+    alert("Số điện thoại phải gồm đúng 10 chữ số!");
     return;
   }
 
@@ -89,7 +102,7 @@ btnSave.onclick = async () => {
     DiaChi,
     TenChuHo,
     NgaySinh,
-    GioiTinh: "Khác", // backend dùng cho chủ hộ
+    GioiTinh,
     cccd,
     sdt,
     NgayLap: new Date().toLocaleDateString("vi-VN")
@@ -121,7 +134,7 @@ btnSave.onclick = async () => {
 /* ===============================
    5. XÓA HỘ KHẨU
    =============================== */
-window.xoaHoKhau = async (id) => {
+window.xoaHoKhau = async function (id) {
   if (!confirm(`Xác nhận xóa hộ khẩu ${id}?`)) return;
 
   try {
@@ -135,15 +148,16 @@ window.xoaHoKhau = async (id) => {
 
     alert("Đã xóa hộ khẩu!");
     fetchHoKhau();
+
   } catch (error) {
     alert("Lỗi kết nối server!");
   }
 };
 
 /* ===============================
-   6. XEM CHI TIẾT HỘ
+   6. XEM CHI TIẾT
    =============================== */
-window.xemChiTiet = (id) => {
+window.xemChiTiet = function (id) {
   window.location.href = `./info_family/info_table.html?IDHoKhau=${id}`;
 };
 

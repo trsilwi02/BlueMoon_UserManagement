@@ -6,6 +6,11 @@ const HoKhauSchema = new mongoose.Schema({
 
   TenChuHo: { type: String, required: true },
   NgaySinh: { type: String, required: true },
+  GioiTinh: {
+    type: String,
+    enum: ["Nam", "Nữ", "Khác"],
+    default: "Khác"
+  },
   cccd: { type: String, required: true },
   sdt: { type: String, required: true },
 
