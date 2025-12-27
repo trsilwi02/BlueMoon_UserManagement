@@ -30,7 +30,7 @@ loginBtn.addEventListener("click", async function () {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       alert("Đăng nhập thành công!");
-      window.location.href = "/FrontEnd/index.html";
+      window.location.href = "../index.html";
     } else {
       alert(data.message || "Sai tên đăng nhập hoặc mật khẩu!");
     }
