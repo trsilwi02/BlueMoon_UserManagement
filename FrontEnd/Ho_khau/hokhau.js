@@ -11,20 +11,37 @@ let danhSachHoKhau = [];
 
 /* ===============================
    1. LOAD DANH SÁCH HỘ KHẨU
-   =============================== */
+================================ */
 async function fetchHoKhau() {
   try {
     const res = await fetch(API_HOKHAU);
     danhSachHoKhau = await res.json();
     renderTable(danhSachHoKhau);
-  } catch (error) {
-    console.error("Lỗi tải danh sách hộ khẩu:", error);
+  } catch (err) {
+    console.error("Lỗi tải hộ khẩu:", err);
   }
 }
 
 /* ===============================
-   2. RENDER TABLE
-   =============================== */
+   2. TẠO ID HỘ KHẨU TỰ ĐỘNG
+   FORMAT: N9xxxxxx
+================================ */
+function generateHoKhauId() {
+  if (danhSachHoKhau.length === 0) return "N9000001";
+
+  const maxNumber = Math.max(
+    ...danhSachHoKhau.map(hk =>
+      parseInt(hk.IDHoKhau.replace("N9", ""), 10)
+    )
+  );
+
+  const nextNumber = (maxNumber + 1).toString().padStart(6, "0");
+  return `N9${nextNumber}`;
+}
+
+/* ===============================
+   3. RENDER TABLE
+================================ */
 function renderTable(data) {
   tableBody.innerHTML = "";
 
@@ -38,9 +55,9 @@ function renderTable(data) {
       <td style="text-align:center">${hk.NgayLap}</td>
       <td class="task-btn">
         <button class="action-btn view-btn"
-          onclick="window.xemChiTiet('${hk.IDHoKhau}')">Xem</button>
+          onclick="xemChiTiet('${hk.IDHoKhau}')">Xem</button>
         <button class="action-btn delete-btn"
-          onclick="window.xoaHoKhau('${hk.IDHoKhau}')">Xóa</button>
+          onclick="xoaHoKhau('${hk.IDHoKhau}')">Xóa</button>
       </td>
     `;
     tableBody.appendChild(row);
@@ -48,8 +65,8 @@ function renderTable(data) {
 }
 
 /* ===============================
-   3. MODAL
-   =============================== */
+   4. MODAL
+================================ */
 btnAdd.onclick = () => {
   modalOverlay.style.display = "flex";
   clearForm();
@@ -60,7 +77,6 @@ btnClose.onclick = () => {
 };
 
 function clearForm() {
-  document.getElementById("IDHoKhau").value = "";
   document.getElementById("DiaChi").value = "";
   document.getElementById("TenChuHo").value = "";
   document.getElementById("NgaySinh").value = "";
@@ -70,10 +86,9 @@ function clearForm() {
 }
 
 /* ===============================
-   4. LƯU HỘ KHẨU (KHỚP BACKEND)
-   =============================== */
+   5. LƯU HỘ KHẨU (AUTO ID)
+================================ */
 btnSave.onclick = async () => {
-  const IDHoKhau = document.getElementById("IDHoKhau").value.trim();
   const DiaChi = document.getElementById("DiaChi").value.trim();
   const TenChuHo = document.getElementById("TenChuHo").value.trim();
   const NgaySinh = document.getElementById("NgaySinh").value;
@@ -81,21 +96,22 @@ btnSave.onclick = async () => {
   const cccd = document.getElementById("cccd").value.trim();
   const sdt = document.getElementById("sdt").value.trim();
 
-  /* ===== VALIDATE GIỐNG BACKEND ===== */
-  if (!IDHoKhau || !TenChuHo || !DiaChi || !cccd || !sdt) {
-    alert("Vui lòng nhập đầy đủ thông tin bắt buộc!");
+  if (!TenChuHo || !DiaChi || !cccd || !sdt) {
+    alert("Vui lòng nhập đầy đủ thông tin!");
     return;
   }
 
   if (!/^\d{12}$/.test(cccd)) {
-    alert("CCCD phải gồm đúng 12 chữ số!");
+    alert("CCCD phải đúng 12 chữ số!");
     return;
   }
 
   if (!/^\d{10}$/.test(sdt)) {
-    alert("Số điện thoại phải gồm đúng 10 chữ số!");
+    alert("Số điện thoại phải đúng 10 chữ số!");
     return;
   }
+
+  const IDHoKhau = generateHoKhauId();
 
   const payload = {
     IDHoKhau,
@@ -118,52 +134,47 @@ btnSave.onclick = async () => {
     const result = await res.json();
 
     if (!res.ok) {
-      alert("Lỗi: " + result.message);
+      alert(result.message);
       return;
     }
 
-    alert("Thêm hộ khẩu thành công!");
+    alert(`Tạo hộ khẩu thành công!\nMã hộ: ${IDHoKhau}`);
     modalOverlay.style.display = "none";
     fetchHoKhau();
 
-  } catch (error) {
-    alert("Không thể kết nối tới server!");
+  } catch (err) {
+    alert("Không thể kết nối server!");
   }
 };
 
 /* ===============================
-   5. XÓA HỘ KHẨU
-   =============================== */
-window.xoaHoKhau = async function (id) {
-  if (!confirm(`Xác nhận xóa hộ khẩu ${id}?`)) return;
+   6. XÓA HỘ KHẨU
+================================ */
+async function xoaHoKhau(id) {
+  if (!confirm(`Xóa hộ khẩu ${id}?`)) return;
 
-  try {
-    const res = await fetch(`${API_HOKHAU}/${id}`, { method: "DELETE" });
-    const result = await res.json();
+  const res = await fetch(`${API_HOKHAU}/${id}`, { method: "DELETE" });
+  const result = await res.json();
 
-    if (!res.ok) {
-      alert("Lỗi: " + result.message);
-      return;
-    }
-
-    alert("Đã xóa hộ khẩu!");
-    fetchHoKhau();
-
-  } catch (error) {
-    alert("Lỗi kết nối server!");
+  if (!res.ok) {
+    alert(result.message);
+    return;
   }
-};
+
+  alert("Đã xóa!");
+  fetchHoKhau();
+}
 
 /* ===============================
-   6. XEM CHI TIẾT
-   =============================== */
-window.xemChiTiet = function (id) {
+   7. XEM CHI TIẾT
+================================ */
+function xemChiTiet(id) {
   window.location.href = `./info_family/info_table.html?IDHoKhau=${id}`;
-};
+}
 
 /* ===============================
-   7. TÌM KIẾM
-   =============================== */
+   8. TÌM KIẾM
+================================ */
 searchInput.oninput = () => {
   const keyword = searchInput.value.toLowerCase();
   const filtered = danhSachHoKhau.filter(hk =>
@@ -175,5 +186,5 @@ searchInput.oninput = () => {
 
 /* ===============================
    INIT
-   =============================== */
+================================ */
 fetchHoKhau();
