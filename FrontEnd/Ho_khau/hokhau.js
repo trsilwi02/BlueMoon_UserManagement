@@ -28,7 +28,18 @@ async function fetchHoKhau() {
 function renderTable(data) {
   tableBody.innerHTML = "";
 
-  data.forEach(hk => {
+  if (!data || data.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center;padding:20px;color:#64748b;">
+          Không tìm thấy kết quả nào
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  data.forEach((hk) => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td style="text-align:center;font-weight:bold">${hk.IDHoKhau}</td>
@@ -105,14 +116,14 @@ btnSave.onclick = async () => {
     GioiTinh,
     cccd,
     sdt,
-    NgayLap: new Date().toLocaleDateString("vi-VN")
+    NgayLap: new Date().toLocaleDateString("vi-VN"),
   };
 
   try {
     const res = await fetch(API_HOKHAU, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
     const result = await res.json();
@@ -125,7 +136,6 @@ btnSave.onclick = async () => {
     alert("Thêm hộ khẩu thành công!");
     modalOverlay.style.display = "none";
     fetchHoKhau();
-
   } catch (error) {
     alert("Không thể kết nối tới server!");
   }
@@ -148,7 +158,6 @@ window.xoaHoKhau = async function (id) {
 
     alert("Đã xóa hộ khẩu!");
     fetchHoKhau();
-
   } catch (error) {
     alert("Lỗi kết nối server!");
   }
@@ -166,9 +175,10 @@ window.xemChiTiet = function (id) {
    =============================== */
 searchInput.oninput = () => {
   const keyword = searchInput.value.toLowerCase();
-  const filtered = danhSachHoKhau.filter(hk =>
-    hk.IDHoKhau.toLowerCase().includes(keyword) ||
-    hk.TenChuHo.toLowerCase().includes(keyword)
+  const filtered = danhSachHoKhau.filter(
+    (hk) =>
+      hk.IDHoKhau.toLowerCase().includes(keyword) ||
+      hk.TenChuHo.toLowerCase().includes(keyword)
   );
   renderTable(filtered);
 };
