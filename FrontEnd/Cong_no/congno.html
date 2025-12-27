@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <script src="/BlueMoon_UserManagement/FrontEnd/main_layout/auth.js"></script>
+  <head>
+    <script src="../main_layout/auth.js"></script>
     <script>
-        checkAuth();
+      checkAuth();
     </script>
 
     <meta charset="UTF-8" />
@@ -15,69 +15,74 @@
     <link rel="stylesheet" href="../main_layout/layout.css" />
     <!-- CSS công nợ -->
     <link rel="stylesheet" href="congno.css" />
-</head>
+  </head>
 
-<body>
-<!-- SIDEBAR -->
-<div id="sidebar"></div>
+  <body>
+    <!-- SIDEBAR -->
+    <div id="sidebar"></div>
 
-<div class="main">
-
-    <!-- ================= TOP BAR ================= -->
-    <div class="top-bar">
+    <div class="main">
+      <!-- ================= TOP BAR ================= -->
+      <div class="top-bar">
         <div class="search-box">
-            <label style="font-weight:600; white-space:nowrap">Tìm kiếm:</label>
-            <div class="input-group">
-                <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Nhập mã hộ hoặc tên chủ hộ..."
-                />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                     viewBox="0 0 24 24" stroke-width="2"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M21 21l-5.197-5.197m0 0
+          <label style="font-weight: 600; white-space: nowrap">Tìm kiếm:</label>
+          <div class="input-group">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Nhập mã hộ hoặc tên chủ hộ..."
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0
                    A7.5 7.5 0 105.196 5.196
-                   a7.5 7.5 0 0010.607 10.607z"/>
-                </svg>
-            </div>
+                   a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </div>
         </div>
 
-        <div style="font-weight:600">
-            Tổng nợ:
-            <span id="totalDebt" class="debt-money">0 đ</span>
+        <div style="font-weight: 600">
+          Tổng nợ:
+          <span id="totalDebt" class="debt-money">0 đ</span>
         </div>
+      </div>
+
+      <!-- ================= TABLE ================= -->
+      <section class="table-section">
+        <div class="table-container">
+          <div class="table-scroll-area">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: center">Mã hộ</th>
+                  <th>Chủ hộ</th>
+                  <th style="text-align: center">Kỳ</th>
+                  <th style="text-align: right">Tổng tiền</th>
+                  <th style="text-align: right">Còn nợ</th>
+                  <th style="text-align: center">Tác vụ</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <!-- JS render -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <!-- ================= TABLE ================= -->
-    <section class="table-section">
-        <div class="table-container">
-            <div class="table-scroll-area">
-                <table>
-                    <thead>
-                    <tr>
-                        <th style="text-align:center">Mã hộ</th>
-                        <th>Chủ hộ</th>
-                        <th style="text-align:center">Kỳ</th>
-                        <th style="text-align:right">Tổng tiền</th>
-                        <th style="text-align:right">Còn nợ</th>
-                        <th style="text-align:center">Tác vụ</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    <!-- JS render -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-</div>
-
-<!-- ================= MODAL THÊM CÔNG NỢ ================= -->
-<div id="modalOverlay" class="overlay">
-    <div class="modal">
+    <!-- ================= MODAL THÊM CÔNG NỢ ================= -->
+    <div id="modalOverlay" class="overlay">
+      <div class="modal">
         <h2>Thêm công nợ</h2>
 
         <label>Hạn thanh toán</label>
@@ -99,15 +104,15 @@
         <input type="text" id="TongTien" readonly value="0 đ" />
 
         <div class="buttons">
-            <button id="save">Lưu lại</button>
-            <button id="close">Đóng</button>
+          <button id="save">Lưu lại</button>
+          <button id="close">Đóng</button>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- ================= MODAL CHI TIẾT ================= -->
-<div id="detailOverlay" class="overlay">
-    <div class="modal">
+    <!-- ================= MODAL CHI TIẾT ================= -->
+    <div id="detailOverlay" class="overlay">
+      <div class="modal">
         <h2>Chi tiết công nợ</h2>
 
         <label>Mã hộ</label>
@@ -135,14 +140,13 @@
         <input id="dTong" readonly />
 
         <div class="buttons">
-            <button onclick="closeDetail()">Đóng</button>
+          <button onclick="closeDetail()">Đóng</button>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- ================= JS ================= -->
-<script src="congno.js"></script>
-<script src="../main_layout/sidebar.js"></script>
-
-</body>
+    <!-- ================= JS ================= -->
+    <script src="congno.js"></script>
+    <script src="../main_layout/sidebar.js"></script>
+  </body>
 </html>

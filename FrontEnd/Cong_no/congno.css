@@ -150,6 +150,43 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  table-layout: fixed;
+}
+
+/* Cột Mã hộ*/
+th:nth-child(1),
+td:nth-child(1) {
+  width: 150px;
+  text-align: center;
+}
+
+/* Cột Chủ hộ*/
+th:nth-child(2),
+td:nth-child(2) {
+  width: auto;
+}
+
+/* Cột Kỳ*/
+th:nth-child(3),
+td:nth-child(3) {
+  width: 150px;
+  text-align: center;
+}
+
+/* Cột Tổng tiền & Còn nợ*/
+th:nth-child(4),
+td:nth-child(4),
+th:nth-child(5),
+td:nth-child(5) {
+  width: 150px;
+  text-align: right;
+}
+
+/* Cột Tác vụ*/
+th:nth-child(6),
+td:nth-child(6) {
+  width: 250px;
+  text-align: center;
 }
 
 thead {
@@ -187,19 +224,21 @@ tr:hover {
 /* ================= ACTION BUTTON ================= */
 .task-btn {
   text-align: center;
+  display: flex;
 }
 
 .action-btn {
-  text-align: center;
-  margin: 0 4px;
-  padding: 5px 10px;
+  margin: 0 2px;
+  padding: 4px 8px;
   cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid transparent;
 }
 
 /* nút xem chi tiết */
-.view-btn:hover {
+/* .view-btn:hover {
   background-color: rgb(154, 255, 154);
-}
+} */
 
 /* nút xóa / thanh toán */
 .delete-btn:hover {

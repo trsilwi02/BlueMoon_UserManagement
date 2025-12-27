@@ -50,7 +50,7 @@ function renderTable(data) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td style="text-align:center;font-weight:600">${index + 1}</td>
+      <td style="text-align:center">${index + 1}</td>
       <td>${quy.tenQuy}</td>
       <td style="font-weight:600;color:#2563eb">
         ${Number(quy.tongSoTien).toLocaleString("vi-VN")} đ
@@ -116,7 +116,7 @@ btnSave.onclick = async () => {
   const payload = {
     tenQuy,
     tongSoTien: isNaN(tongSoTien) ? 0 : tongSoTien,
-    ghiChu
+    ghiChu,
   };
 
   try {
@@ -127,7 +127,7 @@ btnSave.onclick = async () => {
       res = await fetch(API_QUY, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
     }
     // ===== SỬA =====
@@ -135,7 +135,7 @@ btnSave.onclick = async () => {
       res = await fetch(`${API_QUY}/${editingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
     }
 
@@ -146,7 +146,6 @@ btnSave.onclick = async () => {
 
     modalOverlay.style.display = "none";
     fetchQuy();
-
   } catch (err) {
     alert("Không thể kết nối server!");
   }
@@ -176,7 +175,7 @@ window.xoaQuy = async (id) => {
 
   try {
     const res = await fetch(`${API_QUY}/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
     });
 
     if (!res.ok) {
