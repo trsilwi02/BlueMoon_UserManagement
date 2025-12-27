@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-
     <script src="/BlueMoon_UserManagement/FrontEnd/main_layout/auth.js"></script>
     <script>
         checkAuth();
@@ -17,8 +16,8 @@
     <!-- CSS công nợ -->
     <link rel="stylesheet" href="congno.css" />
 </head>
-<body>
 
+<body>
 <!-- SIDEBAR -->
 <div id="sidebar"></div>
 
@@ -49,41 +48,6 @@
             Tổng nợ:
             <span id="totalDebt" class="debt-money">0 đ</span>
         </div>
-
-        <button id="newadd">Thêm mới</button>
-
-        <!-- ================= MODAL THÊM CÔNG NỢ ================= -->
-        <div id="modalOverlay" class="overlay">
-            <div class="modal">
-                <h2>Thêm công nợ</h2>
-
-                <label>Mã hộ</label>
-                <input type="text" id="MaHo" placeholder="Nhập mã hộ" />
-
-                <label>Hạn thanh toán</label>
-                <input type="date" id="HanThanhToan" />
-
-                <label>Tiền điện</label>
-                <input type="number" id="phiDien" placeholder="Nhập tiền điện" />
-
-                <label>Tiền nước</label>
-                <input type="number" id="phiNuoc" placeholder="Nhập tiền nước" />
-
-                <label>Tiền rác</label>
-                <input type="number" id="phiRac" placeholder="Nhập tiền rác" />
-
-                <label>Phí quản lý</label>
-                <input type="number" id="phiQL" placeholder="Nhập phí quản lý" />
-
-                <label>Tổng tiền</label>
-                <input type="text" id="TongTien" readonly value="0 đ" />
-
-                <div class="buttons">
-                    <button id="save">Lưu lại</button>
-                    <button id="close">Đóng</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- ================= TABLE ================= -->
@@ -111,7 +75,37 @@
 
 </div>
 
-<!-- ================= MODAL CHI TIẾT CÔNG NỢ ================= -->
+<!-- ================= MODAL THÊM CÔNG NỢ ================= -->
+<div id="modalOverlay" class="overlay">
+    <div class="modal">
+        <h2>Thêm công nợ</h2>
+
+        <label>Hạn thanh toán</label>
+        <input type="date" id="HanThanhToan" />
+
+        <label>Tiền điện</label>
+        <input type="number" id="phiDien" placeholder="Nhập tiền điện" />
+
+        <label>Tiền nước</label>
+        <input type="number" id="phiNuoc" placeholder="Nhập tiền nước" />
+
+        <label>Tiền rác</label>
+        <input type="number" id="phiRac" placeholder="Nhập tiền rác" />
+
+        <label>Phí quản lý</label>
+        <input type="number" id="phiQL" placeholder="Nhập phí quản lý" />
+
+        <label>Tổng tiền</label>
+        <input type="text" id="TongTien" readonly value="0 đ" />
+
+        <div class="buttons">
+            <button id="save">Lưu lại</button>
+            <button id="close">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL CHI TIẾT ================= -->
 <div id="detailOverlay" class="overlay">
     <div class="modal">
         <h2>Chi tiết công nợ</h2>

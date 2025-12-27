@@ -3,12 +3,11 @@ const API_CONGNO  = "http://localhost:3000/api/congno";
 
 /* ===============================
    ELEMENTS
-   =============================== */
-const tableBody    = document.getElementById("tableBody");
+=============================== */
+const tableBody = document.getElementById("tableBody");
 const modalOverlay = document.getElementById("modalOverlay");
 const detailOverlay = document.getElementById("detailOverlay");
 
-const btnAdd   = document.getElementById("newadd");
 const btnClose = document.getElementById("close");
 const btnSave  = document.getElementById("save");
 
@@ -17,31 +16,28 @@ const totalDebtEl = document.getElementById("totalDebt");
 
 /* ===============================
    STATE
-   =============================== */
+=============================== */
 let danhSachCongNo = [];
+let selectedHoKhau = null;
 
 /* ===============================
    UTIL
-   =============================== */
+=============================== */
 const formatMoney = (num = 0) =>
   Number(num).toLocaleString("vi-VN") + " đ";
 
 /* ===============================
-   1. LOAD DANH SÁCH CÔNG NỢ
-   =============================== */
+   LOAD DATA
+=============================== */
 async function fetchCongNo() {
-  try {
-    const res = await fetch(API_SUMMARY);
-    danhSachCongNo = await res.json();
-    renderTable(danhSachCongNo);
-  } catch (err) {
-    console.error("Lỗi tải công nợ:", err);
-  }
+  const res = await fetch(API_SUMMARY);
+  danhSachCongNo = await res.json();
+  renderTable(danhSachCongNo);
 }
 
 /* ===============================
-   2. RENDER TABLE
-   =============================== */
+   RENDER TABLE
+=============================== */
 function renderTable(data) {
   tableBody.innerHTML = "";
   let tongNo = 0;
@@ -58,9 +54,21 @@ function renderTable(data) {
       <td class="debt-money">${formatMoney(item.conNo)}</td>
       <td class="task-btn">
         <button class="action-btn view-btn"
-          onclick='xemChiTiet(${JSON.stringify(item)})'>
-          Xem
+          onclick='xemChiTiet(${JSON.stringify(item)})'>Xem</button>
+
+        <button class="action-btn"
+          onclick='moThemCongNo("${item.maHo}")'>
+          Thêm công nợ
         </button>
+
+        ${
+          item.conNo > 0
+          ? `<button class="action-btn delete-btn"
+               onclick='xacNhanThanhToan("${item.maHo}")'>
+               Thanh toán
+             </button>`
+          : ""
+        }
       </td>
     `;
     tableBody.appendChild(row);
@@ -70,122 +78,97 @@ function renderTable(data) {
 }
 
 /* ===============================
-   3. MODAL THÊM CÔNG NỢ
-   =============================== */
-btnAdd.onclick = () => {
+   THÊM CÔNG NỢ
+=============================== */
+function moThemCongNo(maHo) {
+  selectedHoKhau = maHo;
   modalOverlay.style.display = "flex";
   clearForm();
-};
+}
 
 btnClose.onclick = () => {
   modalOverlay.style.display = "none";
 };
 
 function clearForm() {
-  document.getElementById("MaHo").value = "";
+  ["phiDien","phiNuoc","phiRac","phiQL"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
   document.getElementById("HanThanhToan").value = "";
-  document.getElementById("phiDien").value = "";
-  document.getElementById("phiNuoc").value = "";
-  document.getElementById("phiRac").value  = "";
-  document.getElementById("phiQL").value   = "";
   document.getElementById("TongTien").value = "0 đ";
 }
 
 /* ===============================
-   4. TÍNH TỔNG TIỀN
-   =============================== */
+   TÍNH TỔNG
+=============================== */
 function tinhTongTien() {
-  const dien = Number(document.getElementById("phiDien").value || 0);
-  const nuoc = Number(document.getElementById("phiNuoc").value || 0);
-  const rac  = Number(document.getElementById("phiRac").value  || 0);
-  const ql   = Number(document.getElementById("phiQL").value   || 0);
+  const dien = +phiDien.value || 0;
+  const nuoc = +phiNuoc.value || 0;
+  const rac  = +phiRac.value  || 0;
+  const ql   = +phiQL.value   || 0;
 
   const total = dien + nuoc + rac + ql;
-  document.getElementById("TongTien").value = formatMoney(total);
-
-  return { dien, nuoc, rac, ql, total };
+  TongTien.value = formatMoney(total);
+  return { dien, nuoc, rac, ql };
 }
 
-["phiDien","phiNuoc","phiRac","phiQL"].forEach(id => {
-  document.getElementById(id).addEventListener("input", tinhTongTien);
-});
+["phiDien","phiNuoc","phiRac","phiQL"]
+  .forEach(id => document.getElementById(id)
+  .addEventListener("input", tinhTongTien));
 
-/* ===============================
-   5. LƯU CÔNG NỢ
-   =============================== */
 btnSave.onclick = async () => {
-  const maHo = document.getElementById("MaHo").value.trim();
-  const hanThanhToan = document.getElementById("HanThanhToan").value;
-
-  if (!maHo || !hanThanhToan) {
-    alert("Vui lòng nhập mã hộ và hạn thanh toán!");
+  const hanThanhToan = HanThanhToan.value;
+  if (!selectedHoKhau || !hanThanhToan) {
+    alert("Thiếu thông tin!");
     return;
   }
 
-  const { dien, nuoc, rac, ql, total } = tinhTongTien();
+  const phi = tinhTongTien();
 
-  if (total <= 0) {
-    alert("Vui lòng nhập ít nhất một khoản phí!");
-    return;
-  }
-
-  const danhSachPhi = [
-    { loaiPhi: "dien", soTien: dien },
-    { loaiPhi: "nuoc", soTien: nuoc },
-    { loaiPhi: "rac",  soTien: rac  },
-    { loaiPhi: "ql",   soTien: ql   }
-  ].filter(p => p.soTien > 0);
-
-  try {
-    for (const phi of danhSachPhi) {
-      const res = await fetch(API_CONGNO, {
+  for (const [loaiPhi, soTien] of Object.entries(phi)) {
+    if (soTien > 0) {
+      await fetch(API_CONGNO, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          hoKhauId: maHo,
-          loaiPhi: phi.loaiPhi,
-          soTien: phi.soTien,
+          hoKhauId: selectedHoKhau,
+          loaiPhi,
+          soTien,
           hanThanhToan
         })
       });
-
-      const result = await res.json();
-      if (!res.ok) {
-        alert("Lỗi: " + result.message);
-        return;
-      }
     }
-
-    alert("Thêm công nợ thành công!");
-    modalOverlay.style.display = "none";
-    fetchCongNo();
-
-  } catch (error) {
-    alert("Không thể kết nối tới server!");
   }
+
+  alert("Đã thêm công nợ!");
+  modalOverlay.style.display = "none";
+  fetchCongNo();
 };
 
 /* ===============================
-   6. XEM CHI TIẾT CÔNG NỢ
-   =============================== */
+   THANH TOÁN
+=============================== */
+async function xacNhanThanhToan(maHo) {
+  if (!confirm("Xác nhận đã thanh toán toàn bộ công nợ?")) return;
+
+  await fetch(`${API_CONGNO}/pay/${maHo}`, { method: "PUT" });
+  alert("Đã thanh toán!");
+  fetchCongNo();
+}
+
+/* ===============================
+   XEM CHI TIẾT
+=============================== */
 window.xemChiTiet = (item) => {
   detailOverlay.style.display = "flex";
-
-  document.getElementById("dMaHo").value  = item.maHo;
-  document.getElementById("dChuHo").value = item.tenChuHo;
-  document.getElementById("dKy").value    = item.ky;
-
-  document.getElementById("dDien").value =
-    formatMoney(item.chiTiet?.dien || 0);
-  document.getElementById("dNuoc").value =
-    formatMoney(item.chiTiet?.nuoc || 0);
-  document.getElementById("dRac").value =
-    formatMoney(item.chiTiet?.rac || 0);
-  document.getElementById("dQL").value =
-    formatMoney(item.chiTiet?.ql || 0);
-
-  document.getElementById("dTong").value =
-    formatMoney(item.tongTien);
+  dMaHo.value = item.maHo;
+  dChuHo.value = item.tenChuHo;
+  dKy.value = item.ky;
+  dDien.value = formatMoney(item.chiTiet?.dien || 0);
+  dNuoc.value = formatMoney(item.chiTiet?.nuoc || 0);
+  dRac.value = formatMoney(item.chiTiet?.rac || 0);
+  dQL.value = formatMoney(item.chiTiet?.ql || 0);
+  dTong.value = formatMoney(item.tongTien);
 };
 
 window.closeDetail = () => {
@@ -193,18 +176,19 @@ window.closeDetail = () => {
 };
 
 /* ===============================
-   7. TÌM KIẾM
-   =============================== */
+   SEARCH
+=============================== */
 searchInput.oninput = () => {
-  const keyword = searchInput.value.toLowerCase();
-  const filtered = danhSachCongNo.filter(item =>
-    item.maHo.toLowerCase().includes(keyword) ||
-    item.tenChuHo.toLowerCase().includes(keyword)
+  const kw = searchInput.value.toLowerCase();
+  renderTable(
+    danhSachCongNo.filter(x =>
+      x.maHo.toLowerCase().includes(kw) ||
+      x.tenChuHo.toLowerCase().includes(kw)
+    )
   );
-  renderTable(filtered);
 };
 
 /* ===============================
    INIT
-   =============================== */
+=============================== */
 fetchCongNo();

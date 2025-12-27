@@ -10,5 +10,6 @@ router.get('/:id', CongNoController.getId);
 router.post('/', CongNoController.create);
 router.put('/:id', CongNoController.update);
 router.delete('/:id', CongNoController.delete);
+router.put("/pay/:maHo", CongNoController.payByHoKhau);
 
 module.exports = router;

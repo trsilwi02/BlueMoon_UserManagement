@@ -159,3 +159,37 @@ exports.delete = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+// PUT /api/congno/pay/:maHo
+exports.payByHoKhau = async (req, res) => {
+  try {
+    const { maHo } = req.params;
+
+    // Lấy đúng ObjectId của hộ khẩu
+    const hk = await require("../models/HoKhau")
+      .findOne({ IDHoKhau: maHo });
+
+    if (!hk) {
+      return res.status(404).json({ message: "Không tìm thấy hộ khẩu!" });
+    }
+
+    // Update toàn bộ công nợ CHƯA thanh toán
+    const result = await CongNo.updateMany(
+      {
+        hoKhauId: hk._id,
+        daThanhToan: false
+      },
+      {
+        $set: { daThanhToan: true }
+      }
+    );
+
+    res.json({
+      message: "Đã thanh toán toàn bộ công nợ!",
+      soLuong: result.modifiedCount
+    });
+
+  } catch (err) {
+    console.error("Lỗi thanh toán:", err);
+    res.status(500).json({ message: err.message });
+  }
+};

@@ -42,7 +42,9 @@ exports.getId = async (req, res) => {
  * ===============================
  * Thêm hộ khẩu
  * POST /api/hokhau
- * 👉 TỰ ĐỘNG TẠO NHÂN KHẨU CHỦ HỘ
+ * 👉 Tự động:
+ *  - Tạo nhân khẩu (chủ hộ)
+ *  - Tạo công nợ khởi tạo (0 đồng)
  * ===============================
  */
 exports.create = async (req, res) => {
@@ -58,28 +60,25 @@ exports.create = async (req, res) => {
       NgayLap
     } = req.body;
 
-    /* ========= VALIDATE BẮT BUỘC ========= */
+    /* ========= VALIDATE ========= */
     if (!IDHoKhau || !TenChuHo || !DiaChi || !cccd || !sdt) {
       return res.status(400).json({
         message: "Vui lòng nhập đầy đủ thông tin bắt buộc!"
       });
     }
 
-    /* ========= VALIDATE CCCD ========= */
     if (!/^\d{12}$/.test(cccd)) {
       return res.status(400).json({
         message: "CCCD phải gồm đúng 12 chữ số!"
       });
     }
 
-    /* ========= VALIDATE SĐT ========= */
     if (!/^\d{10}$/.test(sdt)) {
       return res.status(400).json({
         message: "Số điện thoại phải gồm đúng 10 chữ số!"
       });
     }
 
-    /* ========= KIỂM TRA TRÙNG CCCD ========= */
     const cccdExists = await NhanKhau.findOne({ cccd });
     if (cccdExists) {
       return res.status(400).json({
@@ -87,10 +86,11 @@ exports.create = async (req, res) => {
       });
     }
 
-    /* ========= KIỂM TRA TRÙNG MÃ HỘ ========= */
     const exists = await HoKhau.findOne({ IDHoKhau });
     if (exists) {
-      return res.status(400).json({ message: "Mã hộ khẩu đã tồn tại!" });
+      return res.status(400).json({
+        message: "Mã hộ khẩu đã tồn tại!"
+      });
     }
 
     /* ========= TẠO HỘ KHẨU ========= */
@@ -118,12 +118,22 @@ exports.create = async (req, res) => {
       diaChi: DiaChi
     });
 
+    /* ========= TẠO CÔNG NỢ KHỞI TẠO (0 ĐỒNG) ========= */
+    await CongNo.create({
+      hoKhauId: newHoKhau._id,
+      loaiPhi: "ql",
+      soTien: 0,
+      hanThanhToan: new Date(),
+      daThanhToan: true
+    });
+
     res.status(201).json({
-      message: "Thêm hộ khẩu và chủ hộ thành công!",
+      message: "Thêm hộ khẩu, chủ hộ và công nợ khởi tạo thành công!",
       data: newHoKhau
     });
 
   } catch (error) {
+    console.error("Lỗi tạo hộ khẩu:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -143,7 +153,9 @@ exports.update = async (req, res) => {
     );
 
     if (!updated) {
-      return res.status(404).json({ message: "Hộ khẩu không tồn tại!" });
+      return res.status(404).json({
+        message: "Hộ khẩu không tồn tại!"
+      });
     }
 
     res.json({
@@ -159,6 +171,7 @@ exports.update = async (req, res) => {
  * ===============================
  * Xóa hộ khẩu
  * DELETE /api/hokhau/:id
+ * 👉 Nếu còn công nợ chưa thanh toán → yêu cầu xác nhận
  * ===============================
  */
 exports.delete = async (req, res) => {
@@ -167,15 +180,28 @@ exports.delete = async (req, res) => {
 
     const hk = await HoKhau.findOne({ IDHoKhau: idHoKhau });
     if (!hk) {
-      return res.status(404).json({ message: "Hộ khẩu không tồn tại!" });
+      return res.status(404).json({
+        message: "Hộ khẩu không tồn tại!"
+      });
     }
 
+    /* ===== KIỂM TRA CÒN CÔNG NỢ CHƯA THANH TOÁN ===== */
+    const conNoChuaTra = await CongNo.findOne({
+      hoKhauId: hk._id,
+      daThanhToan: false
+    });
+
+    if (conNoChuaTra) {
+      return res.status(409).json({
+        message: "Hộ khẩu vẫn còn công nợ, bạn có chắc chắn muốn xóa chứ?",
+        requireConfirm: true
+      });
+    }
+
+    /* ===== XÓA TOÀN BỘ DỮ LIỆU LIÊN QUAN ===== */
     await NhanKhau.deleteMany({ IDHoKhau: idHoKhau });
-
     await CongNo.deleteMany({ hoKhauId: hk._id });
-
     await PhuongTien.deleteMany({ IDHoKhau: idHoKhau });
-
     await HoKhau.findOneAndDelete({ IDHoKhau: idHoKhau });
 
     res.json({
