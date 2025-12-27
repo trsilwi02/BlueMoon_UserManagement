@@ -40,7 +40,7 @@ function isValidSDT(sdt) {
 
 function isDuplicateCCCD(cccd) {
   return danhSachThanhVien.some(
-    tv => tv.cccd === cccd && tv._id !== editingID
+    (tv) => tv.cccd === cccd && tv._id !== editingID
   );
 }
 
@@ -48,14 +48,25 @@ function isDuplicateCCCD(cccd) {
    LOAD DỮ LIỆU BAN ĐẦU
    =============================== */
 if (currentIDHoKhau) {
-  document.querySelector("h2").innerText =
-    `Thành viên hộ: ${currentIDHoKhau}`;
+  document.querySelector("h2").innerText = `Thành viên hộ: ${currentIDHoKhau}`;
   init();
 }
 
 async function init() {
   await fetchTenChuHo();
   await fetchThanhVien();
+}
+
+/* ===============================
+   FORMAT DATE
+   =============================== */
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  if (dateStr.includes("-")) {
+    const [y, m, d] = dateStr.split("-");
+    return `${d}/${m}/${y}`;
+  }
+  return dateStr;
 }
 
 /* ===============================
@@ -97,7 +108,7 @@ function renderTable(data) {
     row.innerHTML = `
       <td style="text-align:center">${index + 1}</td>
       <td>${nk.HoVaTen}</td>
-      <td style="text-align:center">${nk.NgaySinh}</td>
+      <td style="text-align:center">${formatDate(nk.NgaySinh)}</td>
       <td style="text-align:center">${nk.GioiTinh}</td>
       <td style="text-align:center">${nk.cccd}</td>
       <td style="text-align:center">${nk.sdt}</td>
@@ -150,7 +161,7 @@ btnSave.onclick = async () => {
     GioiTinh: inputGioiTinh.value,
     cccd: inputCCCD.value.trim(),
     sdt: inputSDT.value.trim(),
-    QuanHeVoiChuHo: selectQuanHe.value
+    QuanHeVoiChuHo: selectQuanHe.value,
   };
 
   // ===== CHECK RỖNG =====
@@ -194,7 +205,7 @@ btnSave.onclick = async () => {
       {
         method: editingID ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       }
     );
 
@@ -207,7 +218,6 @@ btnSave.onclick = async () => {
     alert(editingID ? "Cập nhật thành công!" : "Thêm thành viên thành công!");
     overlay.style.display = "none";
     fetchThanhVien();
-
   } catch (err) {
     alert("Không thể kết nối server!");
   }
@@ -227,7 +237,7 @@ window.xoaThanhVien = async (id) => {
    =============================== */
 window.suaThanhVien = (id) => {
   editingID = id;
-  const nk = danhSachThanhVien.find(tv => tv._id === id);
+  const nk = danhSachThanhVien.find((tv) => tv._id === id);
   if (!nk) return;
 
   const isChuHo = nk.HoVaTen === tenChuHo;
@@ -267,7 +277,6 @@ document.addEventListener("click", function (e) {
 
     localStorage.removeItem("user");
 
-    window.location.href =
-      "/BlueMoon_UserManagement/FrontEnd/login/login.html";
+    window.location.href = "/BlueMoon_UserManagement/FrontEnd/login/login.html";
   }
 });
