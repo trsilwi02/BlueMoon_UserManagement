@@ -5,7 +5,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const currentIDHoKhau = urlParams.get("IDHoKhau");
 
 const API_NHANKHAU = "http://localhost:3000/api/nhankhau";
-const API_HOKHAU  = "http://localhost:3000/api/hokhau";
+const API_HOKHAU = "http://localhost:3000/api/hokhau";
 
 /* ===============================
    KHAI BÁO DOM
@@ -25,13 +25,31 @@ const selectQuanHe = document.getElementById("QuanHeVoiChuHo");
 
 let danhSachThanhVien = [];
 let editingID = null;
-let tenChuHo = "";   // ⭐ QUAN TRỌNG
+let tenChuHo = "";
+
+/* ===============================
+   VALIDATION
+   =============================== */
+function isValidCCCD(cccd) {
+  return /^\d{12}$/.test(cccd);
+}
+
+function isValidSDT(sdt) {
+  return /^\d{10}$/.test(sdt);
+}
+
+function isDuplicateCCCD(cccd) {
+  return danhSachThanhVien.some(
+    tv => tv.cccd === cccd && tv._id !== editingID
+  );
+}
 
 /* ===============================
    LOAD DỮ LIỆU BAN ĐẦU
    =============================== */
 if (currentIDHoKhau) {
-  document.querySelector("h2").innerText = `Thành viên hộ: ${currentIDHoKhau}`;
+  document.querySelector("h2").innerText =
+    `Thành viên hộ: ${currentIDHoKhau}`;
   init();
 }
 
@@ -41,7 +59,7 @@ async function init() {
 }
 
 /* ===============================
-   LẤY TÊN CHỦ HỘ (NGUỒN CHÂN LÝ)
+   LẤY TÊN CHỦ HỘ
    =============================== */
 async function fetchTenChuHo() {
   try {
@@ -73,7 +91,7 @@ function renderTable(data) {
   mem_tableBody.innerHTML = "";
 
   data.forEach((nk, index) => {
-    const isChuHo = nk.HoVaTen === tenChuHo; // ⭐ ĐÚNG NGHIỆP VỤ
+    const isChuHo = nk.HoVaTen === tenChuHo;
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -87,11 +105,11 @@ function renderTable(data) {
         ${isChuHo ? "<b>Chủ hộ</b>" : nk.QuanHeVoiChuHo}
       </td>
       <td style="text-align:center">
-        <button class="action-btn" onclick="suaThanhVien('${nk._id}')">Sửa</button>
+        <button onclick="suaThanhVien('${nk._id}')">Sửa</button>
         ${
           isChuHo
             ? `<span style="color:#999">Xóa</span>`
-            : `<button class="action-btn" onclick="xoaThanhVien('${nk._id}')">Xóa</button>`
+            : `<button onclick="xoaThanhVien('${nk._id}')">Xóa</button>`
         }
       </td>
     `;
@@ -135,12 +153,36 @@ btnSave.onclick = async () => {
     QuanHeVoiChuHo: selectQuanHe.value
   };
 
-  if (!payload.HoVaTen || !payload.cccd || !payload.sdt || !payload.GioiTinh) {
+  // ===== CHECK RỖNG =====
+  if (
+    !payload.HoVaTen ||
+    !payload.NgaySinh ||
+    !payload.GioiTinh ||
+    !payload.cccd ||
+    !payload.sdt
+  ) {
     alert("Vui lòng điền đầy đủ thông tin!");
     return;
   }
 
-  // ❌ KHÔNG BAO GIỜ THÊM CHỦ HỘ
+  // ===== CCCD =====
+  if (!isValidCCCD(payload.cccd)) {
+    alert("CCCD phải gồm đúng 12 chữ số!");
+    return;
+  }
+
+  if (isDuplicateCCCD(payload.cccd)) {
+    alert("CCCD đã tồn tại trong dữ liệu!");
+    return;
+  }
+
+  // ===== SĐT =====
+  if (!isValidSDT(payload.sdt)) {
+    alert("Số điện thoại phải gồm đúng 10 chữ số!");
+    return;
+  }
+
+  // ===== CHỦ HỘ =====
   if (!editingID && payload.HoVaTen === tenChuHo) {
     alert("Chủ hộ đã tồn tại!");
     return;
@@ -175,7 +217,7 @@ btnSave.onclick = async () => {
    XÓA THÀNH VIÊN
    =============================== */
 window.xoaThanhVien = async (id) => {
-  if (!confirm("Bạn có chắc chắn muốn xóa thành viên này?")) return;
+  if (!confirm("Bạn có chắc chắn muốn xóa?")) return;
   await fetch(`${API_NHANKHAU}/${id}`, { method: "DELETE" });
   fetchThanhVien();
 };
@@ -192,14 +234,40 @@ window.suaThanhVien = (id) => {
 
   inputHoTen.value = nk.HoVaTen;
   inputNgaySinh.value = nk.NgaySinh;
-  inputGioiTinh.value = nk.GioiTinh || "";
+  inputGioiTinh.value = nk.GioiTinh;
   inputCCCD.value = nk.cccd;
   inputSDT.value = nk.sdt;
   selectQuanHe.value = nk.QuanHeVoiChuHo;
-
-  // 🔒 CHỦ HỘ: KHÓA QUAN HỆ
   selectQuanHe.disabled = isChuHo;
 
   btnSave.innerText = "Lưu lại";
   overlay.style.display = "flex";
 };
+/* ===============================
+   HIỂN THỊ USERNAME + ĐĂNG XUẤT
+   =============================== */
+
+// HIỂN THỊ USERNAME
+(function showUsername() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const usernameEl = document.getElementById("sidebar-username");
+
+  if (!user || !usernameEl) return;
+
+  usernameEl.innerHTML = `<b>Username:</b> ${user.username}`;
+})();
+
+// ĐĂNG XUẤT
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.id === "logout-btn") {
+    e.preventDefault();
+
+    const confirmLogout = confirm("Bạn có chắc chắn muốn đăng xuất?");
+    if (!confirmLogout) return;
+
+    localStorage.removeItem("user");
+
+    window.location.href =
+      "/BlueMoon_UserManagement/FrontEnd/login/login.html";
+  }
+});

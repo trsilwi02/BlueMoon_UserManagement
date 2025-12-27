@@ -1,8 +1,11 @@
 function checkAuth() {
   const user = localStorage.getItem("user");
 
-  if (!user) {
+if (!localStorage.getItem("user")) {
+  window.location.href = "/BlueMoon_UserManagement/FrontEnd/login/login.html";
+}
 
-    window.location.href = "/BlueMoon_UserManagement/FrontEnd/login/index.html";
+  if (!user) {
+    window.location.href = "/BlueMoon_UserManagement/FrontEnd/login/login.html";
   }
 }

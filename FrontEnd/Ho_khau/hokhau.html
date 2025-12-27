@@ -6,33 +6,50 @@
         checkAuth();
     </script>
 
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../Image/logo.png" type="image/x-icon" />
     <title>Quản lý Hộ khẩu</title>
+
     <link rel="stylesheet" href="../main_layout/layout.css" />
     <link rel="stylesheet" href="hokhau.css" />
 </head>
 <body>
+
 <div id="sidebar"></div>
 
 <div class="main">
+    <!-- ===== TOP BAR ===== -->
     <div class="top-bar">
         <div class="search-box">
             <label style="font-weight: 600; white-space: nowrap">Tìm kiếm:</label>
             <div class="input-group">
-                <input type="text" id="searchInput" placeholder="Nhập tên hoặc mã hộ..." />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Nhập tên hoặc mã hộ..."
+                />
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M21 21l-5.197-5.197m0 0
+                             A7.5 7.5 0 105.196 5.196
+                             a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
             </div>
         </div>
+
         <button id="newadd">Thêm mới</button>
 
+        <!-- ===== MODAL ===== -->
         <div id="modalOverlay" class="overlay">
             <div class="modal">
                 <h2>Thông tin hộ khẩu</h2>
+
                 <label>Mã Hộ Khẩu (ID)</label>
                 <input type="text" id="IDHoKhau" />
 
@@ -40,11 +57,19 @@
                 <input type="text" id="DiaChi" />
 
                 <h2>Thông tin chủ hộ</h2>
+
                 <label>Tên chủ hộ:</label>
                 <input type="text" id="TenChuHo" />
 
                 <label>Ngày sinh:</label>
                 <input type="date" id="NgaySinh" />
+
+                <label>Giới tính:</label>
+                <select id="GioiTinh">
+                    <option value="Khác">Khác</option>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
 
                 <label>CCCD:</label>
                 <input type="text" id="cccd" />
@@ -60,21 +85,23 @@
         </div>
     </div>
 
+    <!-- ===== TABLE ===== -->
     <section class="table-section">
         <div class="table-container">
             <div class="table-scroll-area">
                 <table>
                     <thead>
                     <tr>
-                        <th style="text-align: center">Mã hộ</th>
+                        <th style="text-align:center">Mã hộ</th>
                         <th>Họ tên chủ hộ</th>
                         <th>Địa chỉ</th>
-                        <th style="text-align: center">Số thành viên</th>
-                        <th style="text-align: center">Ngày lập</th>
-                        <th style="text-align: center">Tác vụ</th>
+                        <th style="text-align:center">Số thành viên</th>
+                        <th style="text-align:center">Ngày lập</th>
+                        <th style="text-align:center">Tác vụ</th>
                     </tr>
                     </thead>
                     <tbody id="tableBody">
+                    <!-- JS render -->
                     </tbody>
                 </table>
             </div>
@@ -84,5 +111,6 @@
 
 <script src="hokhau.js"></script>
 <script src="../main_layout/sidebar.js"></script>
+
 </body>
 </html>
