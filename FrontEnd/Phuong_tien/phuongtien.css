@@ -151,6 +151,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  table-layout: fixed;
 }
 
 thead {
@@ -194,6 +195,8 @@ tr:hover {
   margin: 0 4px;
   padding: 5px 10px;
   cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid transparent;
 }
 
 .delete-btn:hover {

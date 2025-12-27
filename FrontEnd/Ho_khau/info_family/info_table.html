@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <script src="/BlueMoon_UserManagement/FrontEnd/main_layout/auth.js"></script>
+  <head>
+    <script src="../../main_layout/auth.js"></script>
     <script>
-        checkAuth();
+      checkAuth();
     </script>
 
     <meta charset="UTF-8" />
@@ -13,121 +13,125 @@
 
     <link rel="stylesheet" href="../../main_layout/layout.css" />
     <link rel="stylesheet" href="info_table.css" />
-</head>
+  </head>
 
-<body>
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <nav class="navbar">
-
+  <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <nav class="navbar">
         <!-- USERNAME -->
         <div class="user">
-            <p id="sidebar-username">
-                <b>Username:</b>
-            </p>
+          <p id="sidebar-username">
+            <b>Username:</b>
+          </p>
         </div>
 
         <!-- MENU + LOGOUT DÙNG CHUNG STYLE -->
         <div class="chucnang">
-            <ul>
-                <li><a href="../../index.html">Trang chủ</a></li>
-                <li><a href="../../Ho_khau/hokhau.html">Quản lý Hộ khẩu</a></li>
-                <li><a href="../../Nhan_khau/nhankhau.html">Quản lý Nhân khẩu</a></li>
-                <li><a href="../../Cong_no/congno.html">Quản lý Công nợ</a></li>
-                <li><a href="../../Quy_cong_dong/quycongdong.html">Quỹ cộng đồng</a></li>
-                <li><a href="../../Phuong_tien/phuongtien.html">Quản lý phương tiện</a></li>
+          <ul>
+            <li><a href="../../index.html">Trang chủ</a></li>
+            <li><a href="../../Ho_khau/hokhau.html">Quản lý Hộ khẩu</a></li>
+            <li>
+              <a href="../../Nhan_khau/nhankhau.html">Quản lý Nhân khẩu</a>
+            </li>
+            <li><a href="../../Cong_no/congno.html">Quản lý Công nợ</a></li>
+            <li>
+              <a href="../../Quy_cong_dong/quycongdong.html">Quỹ cộng đồng</a>
+            </li>
+            <li>
+              <a href="../../Phuong_tien/phuongtien.html"
+                >Quản lý phương tiện</a
+              >
+            </li>
 
-                <!-- LOGOUT -->
-                <li>
-                    <a href="#" id="logout-btn">Đăng xuất</a>
-                </li>
-            </ul>
+            <!-- LOGOUT -->
+            <li>
+              <a href="#" id="logout-btn">Đăng xuất</a>
+            </li>
+          </ul>
         </div>
+      </nav>
+    </div>
 
-    </nav>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-    <!-- TOP BAR -->
-    <div class="top-bar">
+    <!-- MAIN -->
+    <div class="main">
+      <!-- TOP BAR -->
+      <div class="top-bar">
         <h2>Thông tin hộ gia đình</h2>
         <button id="add_mem">Thêm thành viên</button>
 
         <!-- MODAL -->
         <div id="modalOverlay2" class="overlay2">
-            <div class="modal2">
-                <h2>Thông tin thành viên</h2>
+          <div class="modal2">
+            <h2>Thông tin thành viên</h2>
 
-                <label>Họ tên:</label>
-                <input type="text" id="HoVaTen" />
+            <label>Họ tên:</label>
+            <input type="text" id="HoVaTen" />
 
-                <label>Ngày sinh:</label>
-                <input type="date" id="NgaySinh" />
+            <label>Ngày sinh:</label>
+            <input type="date" id="NgaySinh" />
 
-                <label>Giới tính:</label>
-                <select id="GioiTinh">
-                    <option value="">-- Chọn --</option>
-                    <option value="Nam">Nam</option>
-                    <option value="Nữ">Nữ</option>
-                </select>
+            <label>Giới tính:</label>
+            <select id="GioiTinh">
+              <option value="">-- Chọn --</option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
 
-                <label>CCCD:</label>
-                <input type="text" id="cccd" />
+            <label>CCCD:</label>
+            <input type="text" id="cccd" />
 
-                <label>SĐT:</label>
-                <input type="text" id="sdt" />
+            <label>SĐT:</label>
+            <input type="text" id="sdt" />
 
-                <label>Quan hệ với chủ hộ:</label>
-                <select id="QuanHeVoiChuHo">
-                    <option value="">-- Chọn --</option>
-                    <option value="Vợ">Vợ</option>
-                    <option value="Chồng">Chồng</option>
-                    <option value="Con ruột">Con ruột</option>
-                    <option value="Bố">Bố</option>
-                    <option value="Mẹ">Mẹ</option>
-                    <option value="Anh ruột">Anh ruột</option>
-                    <option value="Chị ruột">Chị ruột</option>
-                    <option value="Em ruột">Em ruột</option>
-                    <option value="Khác">Khác</option>
-                </select>
+            <label>Quan hệ với chủ hộ:</label>
+            <select id="QuanHeVoiChuHo">
+              <option value="">-- Chọn --</option>
+              <option value="Vợ">Vợ</option>
+              <option value="Chồng">Chồng</option>
+              <option value="Con ruột">Con ruột</option>
+              <option value="Bố">Bố</option>
+              <option value="Mẹ">Mẹ</option>
+              <option value="Anh ruột">Anh ruột</option>
+              <option value="Chị ruột">Chị ruột</option>
+              <option value="Em ruột">Em ruột</option>
+              <option value="Khác">Khác</option>
+            </select>
 
-                <div class="buttons">
-                    <button id="save2">Thêm</button>
-                    <button id="close2">Đóng</button>
-                </div>
+            <div class="buttons">
+              <button id="save2">Thêm</button>
+              <button id="close2">Đóng</button>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- TABLE -->
+      <section class="table-section">
+        <div class="table-container">
+          <div class="table-scroll-area">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: center">STT</th>
+                  <th>Họ và tên</th>
+                  <th style="text-align: center">Ngày sinh</th>
+                  <th style="text-align: center">Giới tính</th>
+                  <th style="text-align: center">CCCD</th>
+                  <th style="text-align: center">SĐT</th>
+                  <th style="text-align: center">Quan hệ với chủ hộ</th>
+                  <th style="text-align: center">Tác vụ</th>
+                </tr>
+              </thead>
+              <tbody id="mem_tableBody">
+                <!-- JS render -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <!-- TABLE -->
-    <section class="table-section">
-        <div class="table-container">
-            <div class="table-scroll-area">
-                <table>
-                    <thead>
-                    <tr>
-                        <th style="text-align:center">STT</th>
-                        <th>Họ và tên</th>
-                        <th style="text-align:center">Ngày sinh</th>
-                        <th style="text-align:center">Giới tính</th>
-                        <th style="text-align:center">CCCD</th>
-                        <th style="text-align:center">SĐT</th>
-                        <th style="text-align:center">Quan hệ với chủ hộ</th>
-                        <th style="text-align:center">Tác vụ</th>
-                    </tr>
-                    </thead>
-                    <tbody id="mem_tableBody">
-                    <!-- JS render -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-</div>
-
-<script src="info_table.js"></script>
-</body>
+    <script src="info_table.js"></script>
+  </body>
 </html>

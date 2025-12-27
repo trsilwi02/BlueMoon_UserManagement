@@ -26,7 +26,6 @@ async function fetchNhanKhau() {
     const data = await res.json();
     danhSachNhanKhau = Array.isArray(data) ? data : [];
     renderTable(danhSachNhanKhau);
-
   } catch (error) {
     console.error("Lỗi kết nối Server:", error);
     alert("Không kết nối được với Server!");
@@ -49,11 +48,7 @@ function formatDate(dateStr) {
    LẤY ĐỊA CHỈ (AN TOÀN)
    =============================== */
 function getDiaChi(item) {
-  return (
-    item.DiaChi ||
-    item.hoKhau?.DiaChi ||
-    ""
-  );
+  return item.DiaChi || item.hoKhau?.DiaChi || "";
 }
 
 /* ===============================
@@ -101,7 +96,7 @@ function renderTable(data) {
         ${item.sdt || ""}
       </td>
 
-      <td style="text-align:center;font-weight:500">
+      <td style="text-align:center;font-weight:600">
         ${item.IDHoKhau || ""}
       </td>
 
@@ -129,16 +124,14 @@ searchInput.addEventListener("input", (e) => {
     return;
   }
 
-  const filtered = danhSachNhanKhau.filter(item =>
-    (item.HoVaTen || "").toLowerCase().includes(keyword) ||
-    (item.cccd || "").includes(keyword) ||
-    (item.sdt || "").includes(keyword)
+  const filtered = danhSachNhanKhau.filter(
+    (item) =>
+      (item.HoVaTen || "").toLowerCase().includes(keyword) ||
+      (item.cccd || "").includes(keyword) ||
+      (item.sdt || "").includes(keyword)
   );
 
   renderTable(filtered);
 });
 
-/* ===============================
-   INIT
-   =============================== */
 fetchNhanKhau();
