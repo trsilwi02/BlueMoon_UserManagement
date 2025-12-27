@@ -193,7 +193,7 @@ exports.delete = async (req, res) => {
 
     if (conNoChuaTra) {
       return res.status(409).json({
-        message: "Hộ khẩu vẫn còn công nợ, bạn có chắc chắn muốn xóa chứ?",
+        message: "Hộ khẩu vẫn còn công nợ, hãy thanh toán trước khi xóa hộ khẩu",
         requireConfirm: true
       });
     }
