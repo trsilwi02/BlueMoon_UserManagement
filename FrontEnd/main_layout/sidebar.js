@@ -36,10 +36,7 @@ function handleAuthUI() {
 
     if (user.fullname) {
       displayName = user.fullname;
-    } else if (
-      registeredUser &&
-      registeredUser.username === user.username
-    ) {
+    } else if (registeredUser && registeredUser.username === user.username) {
       displayName = registeredUser.fullname;
     } else {
       displayName = user.username;
@@ -77,7 +74,6 @@ document.addEventListener("click", function (e) {
     localStorage.removeItem("user");
 
     // Quay về trang đăng nhập
-    window.location.href =
-      "/BlueMoon_UserManagement/FrontEnd/login/login.html";
+    window.location.href = "../login/login.html";
   }
 });
